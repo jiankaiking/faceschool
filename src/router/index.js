@@ -49,6 +49,11 @@ const routes = [
         path: "/subsidylist",
         name: "subsidyList",
         component: () => import("../views/subsidy/subsidyList.vue")
+      },
+      {
+        path:'/subsidy/info',
+        name: "subsidyInfo",
+        component: () => import("../views/subsidy/modules/subsidyInfo.vue")
       }
     ]
   },

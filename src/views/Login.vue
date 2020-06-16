@@ -7,15 +7,19 @@
         align="center"
         :rules="rules"
         ref="ruleForm"
-        label-width="80px"
+        size="small"
       >
-        <el-form-item label="账号" prop="phone">
-          <el-input v-model="ruleForm.phone"></el-input>
+        <el-form-item  prop="phone">
+          <el-input v-model="ruleForm.phone">
+            <i slot="prefix" class="el-input__icon el-icon-user"></i>
+          </el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password"></el-input>
+        <el-form-item prop="password">
+          <el-input type="password" v-model="ruleForm.password">
+            <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+          </el-input>
         </el-form-item>
-        <el-form-item label-width="30px">
+        <el-form-item>
           <el-button
             style="width: 100%"
             type="primary"
@@ -82,9 +86,9 @@ export default {
   position: fixed;
   border-radius: 10px;
   top: 50%;
-  width: 400px;
+  width: 340px;
   padding: 30px 50px 30px 10px;
-  margin-left: -200px;
+  margin-left: -170px;
   box-sizing: border-box;
   left: 50%;
   height: 300px;

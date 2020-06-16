@@ -17,8 +17,8 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-select>
-          <el-option>
+        <el-select v-model="value1">
+          <el-option lable="123" value="1">
 
           </el-option>
         </el-select>
@@ -28,7 +28,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="loadData">查询</el-button>
-        <el-button type="primary" @click="loadData">新增</el-button>
+        <el-button type="primary" @click="headAdd">新增</el-button>
       </el-form-item>
     </el-form>
     <div class="table-box">
@@ -51,25 +51,28 @@
       </el-table>
 
       <el-pagination
-        style="margin-top: 20px"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="page"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+              style="margin-top: 20px"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="page"
+              :page-sizes="laypageParam"
+              :page-size="size"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
       >
       </el-pagination>
     </div>
+    <subsidy-add-model ref="modelForm" />
   </div>
 </template>
 
 <script>
 import myMixins from "../../config/mixins";
+import subsidyAddModel from "./modules/subsidyAddModel";
 
 export default {
   name: "subsidyList",
+  components:{subsidyAddModel},
   mixins: [myMixins],
   data() {
     return {

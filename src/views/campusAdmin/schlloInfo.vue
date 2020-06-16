@@ -11,7 +11,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="loadData">查询</el-button>
-        <el-button type="primary" @click="loadData">新增</el-button>
+        <el-button type="primary" @click="headAdd">新增</el-button>
       </el-form-item>
     </el-form>
     <div class="table-box">
@@ -32,18 +32,18 @@
       </el-table>
 
       <el-pagination
-        style="margin-top: 20px"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="page"
-        :page-sizes="[100, 200, 300, 400]"
-        :page-size="size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+              style="margin-top: 20px"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="page"
+              :page-sizes="laypageParam"
+              :page-size="size"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
       >
       </el-pagination>
     </div>
-    <schlloAddModel></schlloAddModel>
+    <schlloAddModel ref="modelForm"></schlloAddModel>
   </div>
 </template>
 
@@ -63,6 +63,7 @@ export default {
         user: "",
         region: ""
       },
+      a:'teaching',
       url: {
         list:'get/data/list'
       }

@@ -5,6 +5,8 @@ const myMixins = {
     return {
       loading: false,
       tableData: [],
+      laypageParam:[10, 20, 50, 100],
+      total:0,
       page: 1,
       size: 10
     };
@@ -27,6 +29,9 @@ const myMixins = {
       searchParame = { ...searchParame, ...this.searchData };
       return searchParame;
     },
+    headAdd() {
+      this.$refs['modelForm'].dialogFormVisible = true;
+    },
     loadData() {
       let parames = this.getParame();
       if (!this.url.list) {
@@ -34,9 +39,9 @@ const myMixins = {
         this.$message.error("请设置url.list属性!");
         return;
       }
-      getAction(this.url.list,parames).then(res=>{
-        console.log(res)
-      })
+      getAction(this.url.list, parames).then(res => {
+        console.log(res);
+      });
     }
   }
 };
