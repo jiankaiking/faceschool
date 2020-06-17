@@ -7,7 +7,7 @@
       @select="selectMenu"
       :collapse="menuIsfold"
       router
-      :default-active="this.$route.path"
+      :default-active="activeMenu"
       background-color="#001529"
       text-color="hsla(0,0%,100%,.65)"
       active-text-color="#fff"
@@ -41,6 +41,14 @@
         </template>
         <el-menu-item index="/subsidylist">补贴金列表</el-menu-item>
       </el-submenu>
+      <el-submenu index="5">
+        <template slot="title">
+          <i class="el-icon-money"></i>
+          <span>押金管理</span>
+        </template>
+        <el-menu-item index="/depositlist">押金列表</el-menu-item>
+        <el-menu-item index="/blacklist">黑名单管理</el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>
@@ -60,7 +68,15 @@ export default {
     }
   },
   computed:{
-    ...mapState(['menuIsfold'])
+    ...mapState(['menuIsfold']),
+    activeMenu() {
+      const route = this.$route
+      const { meta, path } = route
+      if (meta.activeMenu) {
+        return meta.activeMenu
+      }
+      return path
+    }
   }
 };
 </script>

@@ -3,6 +3,10 @@ import VueRouter from "vue-router";
 import dashboard from "../views/dashboard.vue";
 
 Vue.use(VueRouter);
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 const routes = [
   {
@@ -53,8 +57,22 @@ const routes = [
       {
         path:'/subsidy/info',
         name: "subsidyInfo",
-        component: () => import("../views/subsidy/modules/subsidyInfo.vue")
-      }
+        component: () => import("../views/subsidy/modules/subsidyInfo.vue"),
+        meta: {
+          activeMenu: '/subsidylist',
+
+        }
+      },
+      {
+        path:'/depositlist',
+        name: "depositList",
+        component: () => import("../views/deposit/depositList.vue"),
+      },
+      {
+        path:'/blacklist',
+        name: "blackList",
+        component: () => import("../views/deposit/blackList.vue"),
+      },
     ]
   },
   {

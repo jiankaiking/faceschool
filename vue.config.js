@@ -5,6 +5,16 @@ module.exports = {
     port: 8080,
     https: false,
     hotOnly: false,
-    proxy: null
+    proxy:null,
+    // proxy: {
+    //   "/api": {
+    //     target: "http://192.168.0.166:8085",
+    //     changeOrigin: true,
+    //     ws: true,
+    //     pathRewrite: {
+    //       "^/api": ""
+    //     }
+    //   }
+    // }
   }
 };

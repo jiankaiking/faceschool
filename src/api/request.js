@@ -1,15 +1,17 @@
 import { Notification } from "element-ui";
 import axios from "axios";
+import qs from "qs";
 
-
-
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 const service = axios.create({
-  baseURL: process.env.BASE_URL,
+  // baseURL: '/api',
+  baseURL: "http://192.168.0.166:8085",
   timeout: 6000
 });
 const err = error => {
   if (error.response) {
     let data = error.response.data;
+    // const token = localStorage.getItem('token')
     switch (error.response.status) {
       case 403:
         Notification.error({
@@ -57,17 +59,17 @@ const err = error => {
 };
 service.interceptors.request.use(
   config => {
-    const token = "123";
+    config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    const token = localStorage.getItem("token");
     if (token) {
-      config.headers["X-Access-Token"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
+      config.headers["Authorization"] = "Bearer " + token;
     }
-    if (config.method == "get") {
-      config.params = {
-        ...config.params
-      };
+    if(config.method === "post"){
+      config.data = qs.stringify({ ...config.data })
     }
     return config;
   },
+
   error => {
     return Promise.reject(error);
   }
@@ -76,4 +78,4 @@ service.interceptors.response.use(response => {
   return response.data;
 }, err);
 
-export {service as axios}
+export { service as axios };

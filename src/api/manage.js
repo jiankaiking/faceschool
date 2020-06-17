@@ -4,6 +4,7 @@ import { Message} from "element-ui";
 
 //post
 export function postAction(url, parameter) {
+  console.log(parameter)
   return axios({
     url: url,
     method: "post",

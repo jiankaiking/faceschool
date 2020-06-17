@@ -32,7 +32,7 @@
         </el-select>
       </el-form-item>
       <div class="center-box">
-        <el-form-item label="补贴门槛">
+        <el-form-item label="补贴门槛" label-width="100px">
           <el-input v-model="form.name" autocomplete="off">
             <template slot="prepend">满</template>
             <template slot="append">元</template>
@@ -44,13 +44,13 @@
             <template slot="append">元</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="补贴比例" v-if="form.type == 2">
+        <el-form-item label="补贴比例" label-width="100px" v-if="form.type == 2">
           <el-input v-model="form.name" autocomplete="off">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
       </div>
-      <el-form-item label="补贴上限">
+      <el-form-item label="补贴上限" label-width="100px">
         <el-row
           v-for="(item, index) in form.topLoad"
           :key="index"
@@ -158,7 +158,7 @@ export default {
   name: "subsidyAddModel",
   data() {
     return {
-      dialogFormVisible: true,
+      dialogFormVisible: false,
       limitDate: [
         { lable: "无", value: "0", isExist: false },
         { lable: "日", value: "1", isExist: false },

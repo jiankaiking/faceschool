@@ -8,7 +8,7 @@
     >
       <el-form-item>
         <el-input
-          v-model="searchData.user"
+          v-model="searchData.campusName"
           placeholder="输入学区名称"
         ></el-input>
       </el-form-item>
@@ -19,14 +19,14 @@
     </el-form>
     <div class="table-box">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="date" label="学校名称"></el-table-column>
-        <el-table-column prop="name" label="校区"></el-table-column>
+        <el-table-column prop="schoolName" label="学校名称"></el-table-column>
+        <el-table-column prop="campusName" label="校区"></el-table-column>
         <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column prop="date" label="教育阶段"></el-table-column>
-        <el-table-column prop="name" label="学制"></el-table-column>
-        <el-table-column prop="address" label="联系人"></el-table-column>
-        <el-table-column prop="address" label="联系方式"></el-table-column>
-        <el-table-column prop="date" label="介绍"></el-table-column>
+        <el-table-column prop="educationStage" label="教育阶段"></el-table-column>
+        <el-table-column prop="schoolSystem" label="学制"></el-table-column>
+        <el-table-column prop="contacts" label="联系人"></el-table-column>
+        <el-table-column prop="contactNumber" label="联系方式"></el-table-column>
+        <el-table-column prop="schoolIntroduction" label="介绍"></el-table-column>
         <el-table-column label="操作">
           <template>
             <el-button type="text">编辑</el-button>
@@ -34,14 +34,14 @@
         </el-table-column>
       </el-table>
       <el-pagination
-              style="margin-top: 20px"
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="page"
-              :page-sizes="laypageParam"
-              :page-size="size"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="total"
+        style="margin-top: 20px"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="page"
+        :page-sizes="laypageParam"
+        :page-size="size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
       >
       </el-pagination>
     </div>
@@ -62,10 +62,11 @@ export default {
   data() {
     return {
       searchData: {
-        user: "",
-        region: ""
+        campusName: ""
       },
-      url: {}
+      url: {
+        list: "/school/campusList"
+      }
     };
   },
   methods: {}

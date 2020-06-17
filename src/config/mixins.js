@@ -4,7 +4,7 @@ const myMixins = {
   data() {
     return {
       loading: false,
-      tableData: [],
+      tableData: [{}],
       laypageParam:[10, 20, 50, 100],
       total:0,
       page: 1,
@@ -35,12 +35,16 @@ const myMixins = {
     loadData() {
       let parames = this.getParame();
       if (!this.url.list) {
-        console.log(parames);
         this.$message.error("请设置url.list属性!");
         return;
       }
+      this.loading = true;
       getAction(this.url.list, parames).then(res => {
-        console.log(res);
+        if(res.code === 200){
+          this.tableData = res.data.records
+          this.total = res.data.total;
+        }
+        this.loading = false;
       });
     }
   }

@@ -9,8 +9,8 @@
         ref="ruleForm"
         size="small"
       >
-        <el-form-item  prop="phone">
-          <el-input v-model="ruleForm.phone">
+        <el-form-item prop="username">
+          <el-input v-model="ruleForm.username">
             <i slot="prefix" class="el-input__icon el-icon-user"></i>
           </el-input>
         </el-form-item>
@@ -33,16 +33,19 @@
 </template>
 
 <script>
+// import { postAction } from "../api/manage";
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
   data() {
     return {
       ruleForm: {
-        phone: "",
+        username: "",
         password: ""
       },
       rules: {
-        phone: [
+        username: [
           { required: true, message: "请输入账号", trigger: "blur" },
           { min: 3, message: "至少是3位数", trigger: "blur" }
         ],
@@ -53,12 +56,16 @@ export default {
     };
   },
   methods: {
+    ...mapActions({ loginIn: "LOGIN" }),
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          this.loginIn(this.ruleForm).then(res => {
+            if(res.code === 200){
+              this.$router.push('/')
+            }
+          });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
