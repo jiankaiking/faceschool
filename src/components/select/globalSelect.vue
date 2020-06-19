@@ -36,7 +36,14 @@ export default {
       this.$emit("update:selectV", e);
     }
   },
-  watch: {}
+  watch: {
+    'selectV':{
+      immediate: true,
+      handler(newVal) {
+        this.selectValue = newVal;
+      }
+    }
+  }
 };
 </script>
 

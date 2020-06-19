@@ -80,7 +80,7 @@ export default {
       dialogFormVisible: false,
       form: {
         name: "",
-        region: "",
+        region: "3",
         date1: "",
         date2: "",
         delivery: false,

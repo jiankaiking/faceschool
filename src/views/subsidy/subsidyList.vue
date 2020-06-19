@@ -8,8 +8,10 @@
     >
       <el-form-item>
         <el-date-picker
-          v-model="value1"
+          v-model="searchDate"
           type="daterange"
+          @change="changeDate"
+          value-format="yyyy-MM-dd"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
@@ -17,12 +19,10 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-select v-model="value1">
-          <el-option lable="123" value="1"> </el-option>
-        </el-select>
+        <global-select :select-v.sync="searchData.status" type="subsidyStatus" />
       </el-form-item>
       <el-form-item>
-        <el-input v-model="searchData.user" placeholder="补贴名称"></el-input>
+        <el-input v-model="searchData.name" placeholder="补贴名称"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="loadData">查询</el-button>
@@ -31,15 +31,36 @@
     </el-form>
     <div class="table-box">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="date" label="编号"></el-table-column>
-        <el-table-column prop="name" label="状态"></el-table-column>
-        <el-table-column prop="address" label="名称"></el-table-column>
-        <el-table-column prop="date" label="类型"></el-table-column>
-        <el-table-column prop="name" label="补贴对象"></el-table-column>
-        <el-table-column prop="address" label="补贴金额/比例"></el-table-column>
-        <el-table-column prop="date" label="开始日期"></el-table-column>
-        <el-table-column prop="date" label="结束日期"></el-table-column>
-        <el-table-column prop="name" label="创建日期"></el-table-column>
+        <el-table-column prop="id" label="编号"></el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            {{ scope.row.status | getSubsidyStatus }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column prop="type" label="类型">
+          <template slot-scope="scope">
+            {{ scope.row.type | getSubsidyType }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="object" label="补贴对象">
+          <template slot-scope="scope">
+            {{ scope.row.object | getSubsidyObject }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="subsidyAmount" label="补贴金额/比例"
+          >s
+          <template slot-scope="scope">
+            <span>{{
+              scope.row.type == 1
+                ? scope.row.subsidyAmount + "元"
+                : scope.row.subsidyProportion + "%"
+            }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="startTime" label="开始日期"></el-table-column>
+        <el-table-column prop="endTime" label="结束日期"></el-table-column>
+        <el-table-column prop="createTime" label="创建日期"></el-table-column>
         <el-table-column label="操作">
           <template>
             <el-button type="text" @click="go">详情</el-button>
@@ -67,26 +88,33 @@
 <script>
 import myMixins from "../../config/mixins";
 import subsidyAddModel from "./modules/subsidyAddModel";
+import globalSelect from "../../components/select/globalSelect";
 
 export default {
   name: "subsidyList",
-  components: { subsidyAddModel },
+  components: { subsidyAddModel,globalSelect },
   mixins: [myMixins],
   data() {
     return {
       searchData: {
-        user: "",
-        region: ""
+        startTime: "",
+        endTime:'',
+        status:'',
+        name: ""
       },
-      value1: "",
+      searchDate: "",
       url: {
-        list:'',
+        list: "/subsidy/list"
       }
     };
   },
   methods: {
-    go(){
-      this.$router.push('/subsidy/info')
+    changeDate(e){
+      this.searchData.startTime = e[0]
+      this.searchData.endTime = e[1]
+    },
+    go() {
+      this.$router.push("/subsidy/info");
     }
   }
 };

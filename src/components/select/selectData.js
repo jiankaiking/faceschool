@@ -21,8 +21,15 @@ const className = [
   { code: "5", value: "五班" }
 ];
 
+const subsidyStatus = [
+  { code: "0", value: "未生效" },
+  { code: "1", value: "生效中" },
+  { code: "2", value: "已过期" },
+];
+
 export default {
   teaching,
   educationalType,
+  subsidyStatus,
   className
 };

@@ -27,8 +27,8 @@
         <el-table-column prop="contactNumber" label="联系电话"></el-table-column>
         <el-table-column prop="schoolIntroduction" label="介绍"></el-table-column>
         <el-table-column label="操作">
-          <template>
-            <el-button type="text">补参</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="fillAnd(scope.row.id)">补参</el-button>
             <el-button type="text">编辑</el-button>
           </template>
         </el-table-column>
@@ -47,18 +47,21 @@
       </el-pagination>
     </div>
     <schlloAddModel ref="modelForm"></schlloAddModel>
+    <add-supplement ref="suppment" />
   </div>
 </template>
 
 <script>
 import myMixins from "../../config/mixins";
 import schlloAddModel from "./modules/schlloAddModel";
+import addSupplement from "./modules/addSupplement";
 
 export default {
   name: "schlloInfo",
   mixins: [myMixins],
   components: {
-    schlloAddModel
+    schlloAddModel,
+    addSupplement
   },
   data() {
     return {
@@ -71,7 +74,11 @@ export default {
       }
     };
   },
-  methods: {}
+  methods: {
+    fillAnd(id){
+      this.$refs['suppment'].add(id)
+    },
+  }
 };
 </script>
 

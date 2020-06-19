@@ -7,26 +7,10 @@
       :model="searchData"
     >
       <el-form-item>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
+        <schllo-select :schoolName.sync="searchData.schoolId" />
       </el-form-item>
       <el-form-item>
-        <el-select v-model="value" placeholder="请选择">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          >
-          </el-option>
-        </el-select>
+        <campus-select :schoolName.sync="searchData.schoolId" :campusId.sync="searchData.campusId" />
       </el-form-item>
       <el-form-item>
         <el-input
@@ -52,11 +36,11 @@
         <el-table-column prop="classNo" label="班级编号"></el-table-column>
         <el-table-column prop="className" label="班级名称"></el-table-column>
         <el-table-column prop="openingTime" label="开班时间"></el-table-column>
-        <el-table-column prop="classSize" label="班级人数"></el-table-column>
+        <el-table-column prop="studentCount" label="班级人数"></el-table-column>
         <el-table-column label="操作">
-          <template>
-            <el-button type="text">详情</el-button>
-            <el-button type="text">编辑</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
+            <el-button type="text" @click="go(scope.row.id)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,33 +56,39 @@
       >
       </el-pagination>
     </div>
+    <class-add-model ref="modelForm" @ok="loadData"/>
   </div>
 </template>
 
 <script>
+import classAddModel from "./modules/classAddModel";
 import myMixins from "../../config/mixins";
-
+import schlloSelect from "../../components/select/schlloSelect";
+import campusSelect from "../../components/select/campusSelect";
 export default {
   name: "classList",
   mixins: [myMixins],
+  components: {
+    classAddModel,
+    schlloSelect,
+    campusSelect
+  },
   data() {
     return {
       searchData: {
         classNo: null,
+        schoolId: "",
+        campusId: ""
       },
-      options: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        }
-      ],
-      value: "",
       url: {
         list: "/class/list"
       }
     };
   },
   methods: {
+    go(id){
+      this.$router.push(`/class/info?id=${id}`)
+    },
     inputChange(e) {
       this.searchData.classNo = e === "" ? null : e;
     }

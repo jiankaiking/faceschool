@@ -24,8 +24,8 @@
       <el-form-item label="证件号" prop="certificateNo">
         <el-input v-model="form.certificateNo" placeholder="请输入证件号" />
       </el-form-item>
-      <el-form-item label="学籍号" prop="personNo">
-        <el-input v-model="form.personNo" placeholder="请输入学籍号"></el-input>
+      <el-form-item label="教师编号" prop="personNo">
+        <el-input v-model="form.personNo" placeholder="请输入教师编号"></el-input>
       </el-form-item>
       <el-form-item label="学校" prop="schoolId">
         <schllo-select :schoolName.sync="form.schoolId" ref="school" />
@@ -45,31 +45,9 @@
           ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="入学时间" prop="enrollmentTime">
-        <el-date-picker
-          v-model="form.enrollmentTime"
-          value-format="yyyy-MM-dd"
-          type="date"
-          placeholder="选择日期"
-        >
-        </el-date-picker>
-      </el-form-item>
-      <el-form-item label="班级编号" prop="classNo">
-        <el-select v-model="form.classNo" placeholder="选择班级编号">
-          <el-option
-            v-for="(item, index) in classArr"
-            :key="index"
-            :value="item.classNo"
-            :label="item.className"
-          ></el-option>
-        </el-select>
-        <!--        <el-input v-model="form.classNo"></el-input>-->
-      </el-form-item>
-      <el-form-item label="监护人" prop="guardian">
-        <el-input v-model="form.guardian"></el-input>
-      </el-form-item>
-      <el-form-item label="监护人手机号" prop="guardianPhone">
-        <el-input v-model="form.guardianPhone"></el-input>
+
+      <el-form-item label="本人手机号" prop="phone">
+        <el-input v-model="form.phone"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -82,22 +60,16 @@
 <script>
 import schlloSelect from "../../../components/select/schlloSelect";
 // import campusSelect from "../../../components/select/campusSelect";
-import {
-  editStudent,
-  classDown,
-  studentInfo,
-  getSchoolDownList
-} from "../../../api/api";
+import { editTeacher, teacherInfo, getSchoolDownList } from "../../../api/api";
 
 export default {
-  name: "studentAddModel",
+  name: "staffAddModel",
   components: {
     schlloSelect
     // campusSelect
   },
   data() {
     return {
-      classArr: [],
       selectList: [],
       selectArr: [
         { code: "1", name: "居民身份证" },
@@ -122,17 +94,9 @@ export default {
         campusId: [
           { required: true, message: "请选择校区", trigger: "change" }
         ],
-        enrollmentTime: [
-          { required: true, message: "请选择入学时间", trigger: "change" }
-        ],
-        classNo: [
-          { required: true, message: "请选择班级编号", trigger: "change" }
-        ],
-        guardian: [
-          { required: true, message: "请输入监护人", trigger: "blur" }
-        ],
-        guardianPhone: [
-          { required: true, message: "请输入监护人手机号码", trigger: "blur" }
+
+          phone: [
+          { required: true, message: "请输入手机号码", trigger: "blur" }
         ]
       },
       form: {
@@ -142,10 +106,7 @@ export default {
         personNo: "",
         schoolId: "",
         campusId: "",
-        enrollmentTime: "",
-        classNo: "",
-        guardian: "",
-        guardianPhone: ""
+          phone:'',
       }
     };
   },
@@ -159,7 +120,7 @@ export default {
     },
     edit(id) {
       this.dialogFormVisible = true;
-      studentInfo({ id }).then(res => {
+        teacherInfo({ id }).then(res => {
         if (res.code === 200) {
           this.form = Object.assign(this.form, res.data);
           this.$refs["school"].selectValue = res.data.schoolId;
@@ -170,7 +131,7 @@ export default {
     ok(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          editStudent(this.form).then(res => {
+            editTeacher(this.form).then(res => {
             if (res.code === 200) {
               this.dialogFormVisible = false;
               this.$message.success(res.msg);
@@ -186,13 +147,6 @@ export default {
       getSchoolDownList({ parentId: id }).then(res => {
         this.selectList = res.data;
       });
-    },
-    getClass(id) {
-      classDown({ campusId:id }).then(res => {
-        if (res.code === 200) {
-          this.classArr = res.data;
-        }
-      });
     }
   },
   watch: {
@@ -200,14 +154,6 @@ export default {
       immediate: true,
       handler(newVal) {
         this.form.campusId = "";
-        this.form.classNo = ''
-        newVal && this.getSelectList(newVal);
-      }
-    },
-    "form.campusId": {
-      immediate: true,
-      handler(newVal) {
-        this.getClass(newVal);
         newVal && this.getSelectList(newVal);
       }
     }

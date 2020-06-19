@@ -17,10 +17,12 @@ const myMixins = {
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.size = val;
+      this.loadData()
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.page = val;
+      this.loadData()
     },
     getParame() {
       let searchParame = {};
@@ -30,7 +32,10 @@ const myMixins = {
       return searchParame;
     },
     headAdd() {
-      this.$refs['modelForm'].dialogFormVisible = true;
+      this.$refs['modelForm'].add();
+    },
+    headEdit(id) {
+      this.$refs['modelForm'].edit(id);
     },
     loadData() {
       let parames = this.getParame();

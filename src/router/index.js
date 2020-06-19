@@ -3,10 +3,10 @@ import VueRouter from "vue-router";
 import dashboard from "../views/dashboard.vue";
 
 Vue.use(VueRouter);
-const originalPush = VueRouter.prototype.push
+const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+  return originalPush.call(this, location).catch(err => err);
+};
 
 const routes = [
   {
@@ -28,6 +28,14 @@ const routes = [
         path: "/classlist",
         name: "classList",
         component: () => import("../views/campusAdmin/classList.vue")
+      },
+      {
+        path: "/class/info",
+        name: "classInfo",
+        component: () => import("../views/campusAdmin/classInfo.vue"),
+        meta: {
+          activeMenu: "/classlist"
+        }
       },
       {
         path: "/schlloinfo",
@@ -55,24 +63,23 @@ const routes = [
         component: () => import("../views/subsidy/subsidyList.vue")
       },
       {
-        path:'/subsidy/info',
+        path: "/subsidy/info",
         name: "subsidyInfo",
         component: () => import("../views/subsidy/modules/subsidyInfo.vue"),
         meta: {
-          activeMenu: '/subsidylist',
-
+          activeMenu: "/subsidylist"
         }
       },
       {
-        path:'/depositlist',
+        path: "/depositlist",
         name: "depositList",
-        component: () => import("../views/deposit/depositList.vue"),
+        component: () => import("../views/deposit/depositList.vue")
       },
       {
-        path:'/blacklist',
+        path: "/blacklist",
         name: "blackList",
-        component: () => import("../views/deposit/blackList.vue"),
-      },
+        component: () => import("../views/deposit/blackList.vue")
+      }
     ]
   },
   {
@@ -85,5 +92,22 @@ const routes = [
 const router = new VueRouter({
   routes
 });
+
+router.beforeEach((to, from, next) => {
+  if (localStorage.getItem("token")) {
+    if (to.path === "/login") {
+      next({ path: "/home" });
+    } else {
+      next();
+    }
+  } else {
+    if(to.path === '/login'){
+      next()
+    }else{
+      next({ path: "/login", query: { redirect: to.fullPath } });
+    }
+  }
+});
+
 
 export default router;

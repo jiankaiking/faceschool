@@ -1,5 +1,6 @@
-import { Notification } from "element-ui";
+import { Notification, Message } from "element-ui";
 import axios from "axios";
+import store from "@/store";
 import qs from "qs";
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -9,6 +10,7 @@ const service = axios.create({
   timeout: 6000
 });
 const err = error => {
+  console.log(123);
   if (error.response) {
     let data = error.response.data;
     // const token = localStorage.getItem('token')
@@ -31,6 +33,13 @@ const err = error => {
         break;
       case 504:
         Notification.error({ message: "系统提示", description: "网络超时" });
+        break;
+      case 300:
+        Message.error({
+          message: "系统提示",
+          description: "未授权，请重新登录",
+          duration: 4
+        });
         break;
       case 401:
         Notification.error({
@@ -64,8 +73,8 @@ service.interceptors.request.use(
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;
     }
-    if(config.method === "post"){
-      config.data = qs.stringify({ ...config.data })
+    if (config.method === "post") {
+      config.data = qs.stringify({ ...config.data });
     }
     return config;
   },
@@ -75,6 +84,13 @@ service.interceptors.request.use(
   }
 );
 service.interceptors.response.use(response => {
+  if (response.data.code === 401) {
+    store.dispatch("Logout").then(() => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    });
+  }
   return response.data;
 }, err);
 

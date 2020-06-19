@@ -1,24 +1,39 @@
 <template>
   <div class="header-view">
     <div class="header-login">
-      <i @click="changeMenuFold" :class="[menuIsfold?'el-icon-s-unfold':'el-icon-s-fold']"></i>
+      <i
+        @click="changeMenuFold"
+        :class="[menuIsfold ? 'el-icon-s-unfold' : 'el-icon-s-fold']"
+      ></i>
     </div>
     <div class="header-right">
       <span>管理员</span>
-      <el-button type="text" class="login-out">退出登录</el-button>
+      <el-button type="text" class="login-out" @click="loginOut"
+        >退出登录</el-button
+      >
     </div>
   </div>
 </template>
 
 <script>
-  import {mapState,mapMutations} from 'vuex'
+import { mapState, mapMutations, mapActions } from "vuex";
+
 export default {
   name: "globalHeader",
-  methods:{
-    ...mapMutations({changeMenuFold:'CHANGE_MENU_FOLD'})
+  methods: {
+    ...mapMutations({ changeMenuFold: "CHANGE_MENU_FOLD" }),
+    ...mapActions({ Logout: "Logout" }),
+    loginOut() {
+      this.Logout().then(() => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
+      });
+    }
   },
-  computed:{
-    ...mapState(['menuIsfold'])
+
+  computed: {
+    ...mapState(["menuIsfold"])
   }
 };
 </script>

@@ -19,6 +19,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    Logout({commit}){
+      localStorage.clear()
+      commit('SET_TOKEN','')
+    },
     LOGIN(context, data) {
       return new Promise((resolve, reject) => {
         login(data)

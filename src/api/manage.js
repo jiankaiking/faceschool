@@ -1,10 +1,8 @@
 import { axios } from "./request";
-import { Message} from "element-ui";
-
+import { Message } from "element-ui";
 
 //post
 export function postAction(url, parameter) {
-  console.log(parameter)
   return axios({
     url: url,
     method: "post",
@@ -37,7 +35,7 @@ export function downFile(url, parameter) {
 export function downloadFile(url, fileName, parameter) {
   return downFile(url, parameter).then(data => {
     if (!data || data.size === 0) {
-        Message.warning("文件下载失败");
+      Message.warning("文件下载失败");
       return;
     }
     if (typeof window.navigator.msSaveBlob !== "undefined") {
