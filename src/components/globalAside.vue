@@ -12,10 +12,10 @@
       text-color="hsla(0,0%,100%,.65)"
       active-text-color="#fff"
     >
-      <el-menu-item index="/home">
-        <i class="el-icon-menu"></i>
-        <span slot="title">首页</span>
-      </el-menu-item>
+<!--      <el-menu-item index="/home">-->
+<!--        <i class="el-icon-menu"></i>-->
+<!--        <span slot="title">首页</span>-->
+<!--      </el-menu-item>-->
       <el-submenu index="2">
         <template slot="title">
           <i class="el-icon-school"></i>

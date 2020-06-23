@@ -40,7 +40,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
-            <el-button type="text" @click="go(scope.row.id)">详情</el-button>
+            <el-button type="text" @click="go(scope.row.id,scope.row.classNo)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -86,8 +86,8 @@ export default {
     };
   },
   methods: {
-    go(id){
-      this.$router.push(`/class/info?id=${id}`)
+    go(id,classNo){
+      this.$router.push(`/class/info?id=${id}&classNo=${classNo}`)
     },
     inputChange(e) {
       this.searchData.classNo = e === "" ? null : e;

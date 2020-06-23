@@ -3,7 +3,7 @@
     <el-option
       v-for="(item, index) in selectList"
       :key="index"
-      :value="item.code"
+      :value="item.value"
       :label="item.value"
     ></el-option>
   </el-select>
@@ -18,7 +18,6 @@ export default {
       type: String
     },
     selectV: {
-      type: String
     }
   },
   data() {
@@ -28,19 +27,20 @@ export default {
     };
   },
   mounted() {
-    this.selectValue = this.selectV;
     this.selectList = selectData[this.type];
+    this.selectValue = this.selectV;
   },
   methods: {
     changeValue(e) {
+      console.log(e);
       this.$emit("update:selectV", e);
     }
   },
   watch: {
-    'selectV':{
+    selectV: {
       immediate: true,
       handler(newVal) {
-        this.selectValue = newVal;
+         this.selectValue = newVal;
       }
     }
   }

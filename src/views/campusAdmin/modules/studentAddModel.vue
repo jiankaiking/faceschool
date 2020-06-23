@@ -154,7 +154,9 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
-
+      this.$nextTick(()=>{
+        this.$refs["school"].selectValue = '';
+      })
       this.dialogFormVisible = true;
     },
     edit(id) {
@@ -199,7 +201,7 @@ export default {
     "form.schoolId": {
       immediate: true,
       handler(newVal) {
-        this.form.campusId = "";
+        // this.form.campusId = "";
         this.form.classNo = ''
         newVal && this.getSelectList(newVal);
       }

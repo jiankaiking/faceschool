@@ -27,9 +27,16 @@ const subsidyStatus = [
   { code: "2", value: "已过期" },
 ];
 
+const orderStatus = [
+  { code: "1", value: "未支付" },
+  { code: "2", value: "通道支付" },
+  { code: "3", value: "保证金支付" },
+  { code: "4", value: "已撤销" },
+]
 export default {
   teaching,
   educationalType,
+  orderStatus,
   subsidyStatus,
   className
 };

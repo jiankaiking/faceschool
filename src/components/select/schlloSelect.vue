@@ -39,10 +39,12 @@ export default {
       this.$emit("update:schoolName", e);
     }
   },
-  schoolName: {
-    immediate: true,
-    handler(newVal) {
-      this.selectValue = newVal;
+  watch:{
+    schoolName: {
+      immediate: true,
+      handler(newVal) {
+        this.selectValue = newVal;
+      }
     }
   }
 };

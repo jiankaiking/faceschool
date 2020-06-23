@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="学生信息"
+    title="教职工信息"
     :close-on-click-modal="false"
     center
     width="50%"
@@ -31,11 +31,6 @@
         <schllo-select :schoolName.sync="form.schoolId" ref="school" />
       </el-form-item>
       <el-form-item label="校区" prop="campusId">
-        <!--        <campus-select-->
-        <!--          :schoolName.sync="form.schoolId"-->
-        <!--          ref="campus"-->
-        <!--          :campusId.sync="form.campusId"-->
-        <!--        />-->
         <el-select v-model="form.campusId" placeholder="选择学区">
           <el-option
             v-for="(item, index) in selectList"
@@ -153,7 +148,13 @@ export default {
     "form.schoolId": {
       immediate: true,
       handler(newVal) {
-        this.form.campusId = "";
+        // this.form.campusId = "";
+        newVal && this.getSelectList(newVal);
+      }
+    },
+    "form.campusId": {
+      immediate: true,
+      handler(newVal) {
         newVal && this.getSelectList(newVal);
       }
     }

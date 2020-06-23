@@ -19,7 +19,15 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <global-select :select-v.sync="searchData.status" type="subsidyStatus" />
+        <el-select v-model="searchData.status">
+            <el-option
+                    v-for="(item, index) in selectList"
+                    :key="index"
+                    :value="item.code"
+                    :label="item.value"
+            ></el-option>
+        </el-select>
+
       </el-form-item>
       <el-form-item>
         <el-input v-model="searchData.name" placeholder="补贴名称"></el-input>
@@ -62,9 +70,9 @@
         <el-table-column prop="endTime" label="结束日期"></el-table-column>
         <el-table-column prop="createTime" label="创建日期"></el-table-column>
         <el-table-column label="操作">
-          <template>
-            <el-button type="text" @click="go">详情</el-button>
-            <el-button type="text">查看数据</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="headEdit(scope.row.id)">详情</el-button>
+            <el-button type="text" @click="go">查看数据</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -81,18 +89,17 @@
       >
       </el-pagination>
     </div>
-    <subsidy-add-model ref="modelForm" />
+    <subsidy-add-model @ok="loadData" ref="modelForm" />
   </div>
 </template>
 
 <script>
 import myMixins from "../../config/mixins";
 import subsidyAddModel from "./modules/subsidyAddModel";
-import globalSelect from "../../components/select/globalSelect";
 
 export default {
   name: "subsidyList",
-  components: { subsidyAddModel,globalSelect },
+  components: { subsidyAddModel },
   mixins: [myMixins],
   data() {
     return {
@@ -102,6 +109,11 @@ export default {
         status:'',
         name: ""
       },
+      selectList: [
+        { code: "0", value: "未生效" },
+        { code: "1", value: "生效中" },
+        { code: "2", value: "已过期" },
+      ],
       searchDate: "",
       url: {
         list: "/subsidy/list"

@@ -29,7 +29,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="fillAnd(scope.row.id)">补参</el-button>
-            <el-button type="text">编辑</el-button>
+            <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -46,7 +46,7 @@
       >
       </el-pagination>
     </div>
-    <schlloAddModel ref="modelForm"></schlloAddModel>
+    <schlloAddModel ref="modelForm" @ok="loadData"></schlloAddModel>
     <add-supplement ref="suppment" />
   </div>
 </template>

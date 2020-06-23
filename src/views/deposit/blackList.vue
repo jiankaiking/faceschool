@@ -1,11 +1,11 @@
 <template>
   <div class="padding-view">
     <div class="role-nav">
-      <span :class="{ active: role == 0 }" @click="role = 0">黑名单列表</span
-      ><span>|</span
-      ><span :class="{ active: role == 1 }" @click="role = 1">黑名单金额设置 </span>
+      <span :class="{ active: role == 0 }" @click="changeRole(0)">黑名单列表</span><span>|</span
+    ><span :class="{ active: role == 1 }" @click="changeRole(1)">黑名单金额设置</span>
     </div>
     <el-form
+            v-if="role == 0"
       class="search-form"
       ref="searchForm"
       :inline="true"
@@ -34,8 +34,9 @@
         <el-button type="primary" @click="headAdd">导入</el-button>
       </el-form-item>
     </el-form>
+    <div class="set-btn" v-if="role == 1"><el-button type="success" plain>设置</el-button></div>
     <div class="table-box">
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table v-if="role == 0" :data="tableData" border style="width: 100%">
         <el-table-column prop="date" label="姓名"></el-table-column>
         <el-table-column prop="name" label="学籍号"></el-table-column>
         <el-table-column prop="address" label="学校"></el-table-column>
@@ -48,6 +49,16 @@
           <template>
             <el-button type="text">充值</el-button>
             <el-button type="text">详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-table v-if="role == 1" :data="tableData" border style="width: 100%">
+        <el-table-column prop="address" label="学校"></el-table-column>
+        <el-table-column prop="date" label="校区"></el-table-column>
+        <el-table-column prop="date" label="黑名单金额设置"></el-table-column>
+        <el-table-column label="操作">
+          <template>
+            <el-button type="text">设置</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -85,7 +96,12 @@ export default {
         list: ""
       }
     };
-  }
+  },
+  methods:{
+    changeRole(e){
+       this.role = e
+    }
+  },
 };
 </script>
 
@@ -104,6 +120,9 @@ export default {
 }
 .role-nav span.active {
   color: #000;
+}
+.set-btn{
+  background: #ffffff; padding:  10px 30px; box-sizing: border-box; margin-bottom: 10px;
 }
 .role-nav span:nth-child(2) {
   color: #7ecf99;

@@ -28,8 +28,8 @@
         <el-table-column prop="contactNumber" label="联系方式"></el-table-column>
         <el-table-column prop="schoolIntroduction" label="介绍"></el-table-column>
         <el-table-column label="操作">
-          <template>
-            <el-button type="text">编辑</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>

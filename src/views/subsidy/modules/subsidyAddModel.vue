@@ -5,7 +5,7 @@
     center
     :visible.sync="dialogFormVisible"
   >
-    <el-form label-position="left" :model="form" label-width="150px">
+    <el-form :model="form" label-width="150px">
       <el-row>
         <el-col :span="10">
           <el-form-item label="补贴名称">
@@ -15,7 +15,9 @@
         <el-col :span="8" :offset="1">
           <el-form-item label="补贴时间">
             <el-date-picker
-              v-model="value1"
+              v-model="startEndTime"
+              @input="testClick"
+              value-format="yyyy-MM-dd"
               type="daterange"
               range-separator="至"
               start-placeholder="开始日期"
@@ -33,31 +35,35 @@
       </el-form-item>
       <div class="center-box">
         <el-form-item label="补贴门槛" label-width="100px">
-          <el-input v-model="form.name" autocomplete="off">
+          <el-input v-model="form.fullMoney" autocomplete="off">
             <template slot="prepend">满</template>
             <template slot="append">元</template>
           </el-input>
         </el-form-item>
         <el-form-item label="补贴金额" v-if="form.type == 1">
-          <el-input v-model="form.name" autocomplete="off">
+          <el-input v-model="form.subsidyAmount" autocomplete="off">
             <template slot="prepend">订单减</template>
             <template slot="append">元</template>
           </el-input>
         </el-form-item>
-        <el-form-item label="补贴比例" label-width="100px" v-if="form.type == 2">
-          <el-input v-model="form.name" autocomplete="off">
+        <el-form-item
+          label="补贴比例"
+          label-width="100px"
+          v-if="form.type == 2"
+        >
+          <el-input v-model="form.subsidyProportion" autocomplete="off">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
       </div>
       <el-form-item label="补贴上限" label-width="100px">
         <el-row
-          v-for="(item, index) in form.topLoad"
+          v-for="(item, index) in form.subsidyUpper"
           :key="index"
           style="margin-bottom: 10px"
         >
           <el-col :span="4">
-            <el-select v-model="item.value" @change="changeLimit">
+            <el-select v-model="item.upperType" @change="changeLimit">
               <el-option
                 v-for="(_item, _index) in limitDate"
                 :key="_index"
@@ -67,13 +73,21 @@
               ></el-option>
             </el-select>
           </el-col>
-          <el-col :span="6" :offset="1" v-if="form.topLoad[0].value != 0">
-            <el-input v-model="item.money" autocomplete="off">
+          <el-col
+            :span="6"
+            :offset="1"
+            v-if="form.subsidyUpper[0].upperType != 0"
+          >
+            <el-input  v-model="item.upperMoney" autocomplete="off">
               <template slot="prepend">满</template>
               <template slot="append">元</template>
             </el-input>
           </el-col>
-          <el-col :span="2" :offset="1" v-if="form.topLoad[0].value != 0">
+          <el-col
+            :span="2"
+            :offset="1"
+            v-if="form.subsidyUpper[0].upperType != 0"
+          >
             <div class="add-icon" @click="addLimit" v-if="index == 0">
               <i class="el-icon-circle-plus"></i>
             </div>
@@ -84,20 +98,20 @@
         </el-row>
       </el-form-item>
       <el-form-item label="补贴对象" label-width="140px">
-        <el-radio-group>
+        <el-radio-group v-model="form.object">
           <el-radio label="1">全部</el-radio>
-          <el-radio label="0">教职工</el-radio>
-          <el-radio label="0">学生</el-radio>
+          <el-radio label="2">教职工</el-radio>
+          <el-radio label="3">学生</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="补贴时段" label-width="140px">
         <el-row
-          v-for="(item, index) in form.dateArr"
+          v-for="(item, index) in form.subsidyTime"
           :key="index"
           style="margin-bottom: 10px"
         >
           <el-col :span="3">
-            <el-select v-model="item.value" @change="changeSubsidies">
+            <el-select v-model="item.week" @change="changeSubsidies">
               <el-option
                 v-for="(seItem, sIndex) in SubsidiesDate"
                 :key="sIndex"
@@ -108,20 +122,19 @@
             </el-select>
           </el-col>
           <el-col :span="3" :offset="1">
-            <el-select v-model="item.date">
+            <el-select v-model="item.timeType">
               <el-option label="全天" value="0"></el-option>
               <el-option label="时间段" value="1"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="11" :offset="1" v-if="item.date == 1">
+          <el-col :span="11" :offset="1" v-if="item.timeType == 1">
             <el-time-picker
               is-range
-              v-model="item.time"
+              v-model="item.startEndTime"
               range-separator="至"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
               value-format="HH:mm:ss"
-              @change="abc"
               placeholder="选择时间范围"
             >
             </el-time-picker>
@@ -137,23 +150,23 @@
         </el-row>
       </el-form-item>
       <el-form-item label="是否与其他补贴共用" label-width="140px">
-        <el-radio-group>
-          <el-radio label="1">是</el-radio>
-          <el-radio label="0">否</el-radio>
+        <el-radio-group v-model="form.isShared">
+          <el-radio :label="1">是</el-radio>
+          <el-radio :label="0">否</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
 
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="dialogFormVisible = false"
-        >确 定</el-button
-      >
+      <el-button type="primary" @click="ok">确 定</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
+import { addSubsidy,subsidyInfo } from "../../../api/api";
+
 export default {
   name: "subsidyAddModel",
   data() {
@@ -161,78 +174,136 @@ export default {
       dialogFormVisible: false,
       limitDate: [
         { lable: "无", value: "0", isExist: false },
-        { lable: "日", value: "1", isExist: false },
-        { lable: "周", value: "2", isExist: false },
-        { lable: "月", value: "3", isExist: false }
+        { lable: "日", value: "日", isExist: false },
+        { lable: "周", value: "周", isExist: false },
+        { lable: "月", value: "月", isExist: false }
       ],
       SubsidiesDate: [
         { lable: "全部", value: "0", isExist: false },
-        { lable: "周一", value: "1", isExist: false },
-        { lable: "周二", value: "2", isExist: false },
-        { lable: "周三", value: "3", isExist: false },
-        { lable: "周四", value: "4", isExist: false },
-        { lable: "周五", value: "5", isExist: false },
-        { lable: "周六", value: "6", isExist: false },
-        { lable: "周日", value: "7", isExist: false }
+        { lable: "周一", value: "周一", isExist: false },
+        { lable: "周二", value: "周二", isExist: false },
+        { lable: "周三", value: "周三", isExist: false },
+        { lable: "周四", value: "周四", isExist: false },
+        { lable: "周五", value: "周五", isExist: false },
+        { lable: "周六", value: "周六", isExist: false },
+        { lable: "周日", value: "周日", isExist: false }
       ],
-      value1: "",
+      startEndTime: "",
+
       form: {
-        topLoad: [{ value: "0", money: "" }],
         name: "",
-        dateArr: [{ value: "", date: "0", time: "" }],
-        region: "",
-        typea: "0",
-        date1: "",
-        date2: "",
-        delivery: false,
+        startTime: "",
+        endTime: "0",
         type: "1",
-        resource: "",
-        desc: ""
+        deadTime: "",
+        fullMoney: "",
+        subsidyAmount: "",
+        subsidyProportion: "",
+        object: "1",
+        isShared: 0,
+        subsidyUpper: [{ upperType: "", upperMoney: "" }],
+        subsidyTime: [{ week: "", timeType: "", startEndTime: "" }]
       }
     };
   },
   methods: {
-    changeLimit(){
-      this.limitDate.forEach((item) => {
-        item.isExist = false;
-        this.form.topLoad.forEach(_item => {
-          if (item.value === _item.value) {
-            item.isExist = true;
-          }
-        });
-      });
+    changeLimit(e) {
+      e == 0
+        ? (this.form.subsidyUpper = [{ upperType: "0", upperMoney: "" }])
+        : this.limitDate.forEach(item => {
+            item.isExist = false;
+            this.form.subsidyUpper.forEach(_item => {
+              if (item.value === _item.upperType) {
+                item.isExist = true;
+              }
+            });
+          });
     },
-    changeSubsidies() {
-      this.SubsidiesDate.forEach((item, index) => {
-        this.SubsidiesDate[index].isExist = false;
-        this.form.dateArr.forEach(_item => {
-          if (item.value === _item.value) {
-            this.SubsidiesDate[index].isExist = true;
-          }
-        });
-      });
+    changeSubsidies(e) {
+      e == 0
+        ? (this.form.subsidyTime = [
+            { week: "0", timeType: "", startEndTime: "" }
+          ])
+        : this.SubsidiesDate.forEach((item, index) => {
+            this.SubsidiesDate[index].isExist = false;
+            this.form.subsidyTime.forEach(_item => {
+              if (item.value === _item.week) {
+                this.SubsidiesDate[index].isExist = true;
+              }
+            });
+          });
+    },
+    add() {
+      this.dialogFormVisible = true;
+      this.form = {
+        name: "",
+        startTime: "",
+        endTime: "0",
+        type: "1",
+        deadTime: "",
+        fullMoney: "",
+        subsidyAmount: "",
+        subsidyProportion: "",
+        object: "1",
+        isShared: 0,
+        subsidyUpper: [{ upperType: "", upperMoney: "" }],
+        subsidyTime: [{ week: "", timeType: "", startEndTime: "" }]
+      }
+    },
+    edit(id){
+      this.dialogFormVisible = true;
+      subsidyInfo({id}).then(res=>{
+        this.startEndTime = [res.data.startTime,res.data.endTime]
+        res.data.subsidyTime.forEach(item =>{
+          item.startEndTime = [item.startTime,item.endTime]
+        })
+        this.form = res.data;
+      })
+    },
+    testClick(e) {
+      this.form.startTime = e[0];
+      this.form.endTime = e[1];
     },
     //添加上限
     addLimit() {
-      this.form.topLoad.length == 3 && this.$message.error("不能增加了");
-      this.form.topLoad.length < 3 &&
-        this.form.topLoad.push({ value: "", money: "" });
+      this.form.subsidyUpper.length == 3 && this.$message.error("不能增加了");
+      this.form.subsidyUpper.length < 3 &&
+        this.form.subsidyUpper.push({ upperType: "", upperMoney: "" });
     },
     //删除上限
     deleteLimit(index) {
-      this.form.topLoad.splice(index, 1);
-      this.changeLimit()
+      this.form.subsidyUpper.splice(index, 1);
+      this.changeLimit();
     },
     addTime() {
-      this.form.dateArr[0].value == 0 && this.$message.error("选择全部了");
-      this.form.dateArr[0].value != 0 &&
-        this.form.dateArr.push({ value: "", date: "0", time: "" });
+      this.form.subsidyTime[0].value == 0 && this.$message.error("选择全部了");
+      this.form.subsidyTime[0].value != 0 &&
+        this.form.subsidyTime.push({
+          week: "",
+          timeType: "",
+          startEndTime: ""
+        });
     },
     deleteTime(index) {
-      this.form.dateArr.splice(index, 1);
+      this.form.subsidyTime.splice(index, 1);
       this.changeSubsidies();
     },
-  }
+    ok() {
+      this.form.subsidyTime.forEach(item => {
+        item.startTime = item.startEndTime[0];
+        item.endTime = item.startEndTime[1];
+      });
+      // this.form = JSON.stringify()
+      addSubsidy(this.form).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.msg);
+          this.dialogFormVisible = false;
+          this.$emit("ok");
+        }
+      });
+    }
+  },
+  watch: {}
 };
 </script>
 <style>

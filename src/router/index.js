@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/",
     component: dashboard,
-    redirect: "/home",
+    redirect: "/schlloinfo",
     children: [
       {
         path: "/home",
@@ -96,7 +96,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (localStorage.getItem("token")) {
     if (to.path === "/login") {
-      next({ path: "/home" });
+      next({ path: "/schlloinfo" });
     } else {
       next();
     }

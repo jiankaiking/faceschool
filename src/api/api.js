@@ -6,6 +6,10 @@ export const getSchoolDownList = params => getAction("/school/schoolDownList", p
 //学校新增修改 校区新增修改
 export const addSchool = params => postAction("/school/edit", params);
 
+//学校详情
+export const getSchoolInfo = params => getAction("/school/info", params);
+
+
 //学校补参
 export const schoolSupplement = params => postAction("/school/supplement", params);
 
@@ -39,4 +43,12 @@ export const studentInfo = (params) => getAction('/person/studentInfo',params)
 // 模板下载 老师
 export const teacherTemplate = () => getAction('/person/teacherTemplate')
 
+//新增补贴
+export const addSubsidy = params => postAction('/subsidy/saveSubsidy',params)
 
+export const subsidyInfo = params => getAction('/subsidy/info',params)
+
+export const getCityCode = (params) => getAction('/sysRegion/getRegionByCode',params)
+
+    //押金详情
+export const depositInfo = params => getAction('/deposit/depositInfo',params)

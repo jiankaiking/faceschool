@@ -6,6 +6,7 @@ export function postAction(url, parameter) {
   return axios({
     url: url,
     method: "post",
+    dataType:'JSON',
     data: parameter
   });
 }

@@ -100,7 +100,7 @@ export default {
     return {
       classInfo: {},
       url: {
-        list: "/person/studentList?classNo=" + this.$route.query.id
+        list: "/person/studentList?classNo=" + this.$route.query.classNo
       }
     };
   },

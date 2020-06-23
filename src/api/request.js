@@ -1,7 +1,7 @@
 import { Notification, Message } from "element-ui";
 import axios from "axios";
 import store from "@/store";
-import qs from "qs";
+// import qs from "qs";
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 const service = axios.create({
@@ -10,7 +10,6 @@ const service = axios.create({
   timeout: 6000
 });
 const err = error => {
-  console.log(123);
   if (error.response) {
     let data = error.response.data;
     // const token = localStorage.getItem('token')
@@ -68,13 +67,15 @@ const err = error => {
 };
 service.interceptors.request.use(
   config => {
-    config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+    // config.headers["Content-Type"] = "application/x-www-form-urlencoded";
+     config.headers["Content-Type"] = "application/json;charset=UTF-8";
+
     const token = localStorage.getItem("token");
     if (token) {
       config.headers["Authorization"] = "Bearer " + token;
     }
     if (config.method === "post") {
-      config.data = qs.stringify({ ...config.data });
+      // config.data = qs.stringify({ ...config.data });
     }
     return config;
   },
