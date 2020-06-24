@@ -81,6 +81,7 @@
 
 <script>
 import schlloSelect from "../../../components/select/schlloSelect";
+
 // import campusSelect from "../../../components/select/campusSelect";
 import {
   editStudent,
@@ -96,6 +97,23 @@ export default {
     // campusSelect
   },
   data() {
+    var checkPhone = (rule, value, callback) => {
+      const phoneReg = /^1[3|4|5|6|7|8][0-9]{9}$/;
+      if (!value) {
+        return callback(new Error("电话号码不能为空"));
+      }
+      setTimeout(() => {
+        if (!Number.isInteger(+value)) {
+          callback(new Error("请输入数字值"));
+        } else {
+          if (phoneReg.test(value)) {
+            callback();
+          } else {
+            callback(new Error("电话号码格式不正确"));
+          }
+        }
+      }, 100);
+    };
     return {
       classArr: [],
       selectList: [],
@@ -132,7 +150,7 @@ export default {
           { required: true, message: "请输入监护人", trigger: "blur" }
         ],
         guardianPhone: [
-          { required: true, message: "请输入监护人手机号码", trigger: "blur" }
+          { required: true, validator:checkPhone, trigger: "blur" },
         ]
       },
       form: {
@@ -154,9 +172,9 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
-      this.$nextTick(()=>{
-        this.$refs["school"].selectValue = '';
-      })
+      this.$nextTick(() => {
+        this.$refs["school"].selectValue = "";
+      });
       this.dialogFormVisible = true;
     },
     edit(id) {
@@ -190,7 +208,7 @@ export default {
       });
     },
     getClass(id) {
-      classDown({ campusId:id }).then(res => {
+      classDown({ campusId: id }).then(res => {
         if (res.code === 200) {
           this.classArr = res.data;
         }
@@ -202,7 +220,7 @@ export default {
       immediate: true,
       handler(newVal) {
         // this.form.campusId = "";
-        this.form.classNo = ''
+        this.form.classNo = "";
         newVal && this.getSelectList(newVal);
       }
     },

@@ -8,7 +8,6 @@
     >
       <el-form-item>
         <el-date-picker
-          v-model="searchDate"
           type="daterange"
           @change="changeDate"
           value-format="yyyy-MM-dd"
@@ -20,14 +19,13 @@
       </el-form-item>
       <el-form-item>
         <el-select v-model="searchData.status">
-            <el-option
-                    v-for="(item, index) in selectList"
-                    :key="index"
-                    :value="item.code"
-                    :label="item.value"
-            ></el-option>
+          <el-option
+            v-for="(item, index) in selectList"
+            :key="index"
+            :value="item.code"
+            :label="item.value"
+          ></el-option>
         </el-select>
-
       </el-form-item>
       <el-form-item>
         <el-input v-model="searchData.name" placeholder="补贴名称"></el-input>
@@ -71,8 +69,12 @@
         <el-table-column prop="createTime" label="创建日期"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="headEdit(scope.row.id)">详情</el-button>
-            <el-button type="text" @click="go">查看数据</el-button>
+            <el-button type="text" @click="headEdit(scope.row.id)"
+              >详情</el-button
+            >
+            <el-button type="text" @click="go(scope.row.id)"
+              >查看数据</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -96,6 +98,7 @@
 <script>
 import myMixins from "../../config/mixins";
 import subsidyAddModel from "./modules/subsidyAddModel";
+import selectData from "../../components/select/selectData";
 
 export default {
   name: "subsidyList",
@@ -105,15 +108,11 @@ export default {
     return {
       searchData: {
         startTime: "",
-        endTime:'',
-        status:'',
+        endTime: "",
+        status: "",
         name: ""
       },
-      selectList: [
-        { code: "0", value: "未生效" },
-        { code: "1", value: "生效中" },
-        { code: "2", value: "已过期" },
-      ],
+      selectList: selectData.subsidyStatus,
       searchDate: "",
       url: {
         list: "/subsidy/list"
@@ -121,12 +120,12 @@ export default {
     };
   },
   methods: {
-    changeDate(e){
-      this.searchData.startTime = e[0]
-      this.searchData.endTime = e[1]
+    changeDate(e) {
+      this.searchData.startTime = e[0];
+      this.searchData.endTime = e[1];
     },
-    go() {
-      this.$router.push("/subsidy/info");
+    go(id) {
+      this.$router.push(`/subsidy/info?subsidyId=${id}`);
     }
   }
 };

@@ -25,7 +25,10 @@
         <el-input v-model="form.certificateNo" placeholder="请输入证件号" />
       </el-form-item>
       <el-form-item label="教师编号" prop="personNo">
-        <el-input v-model="form.personNo" placeholder="请输入教师编号"></el-input>
+        <el-input
+          v-model="form.personNo"
+          placeholder="请输入教师编号"
+        ></el-input>
       </el-form-item>
       <el-form-item label="学校" prop="schoolId">
         <schllo-select :schoolName.sync="form.schoolId" ref="school" />
@@ -64,6 +67,23 @@ export default {
     // campusSelect
   },
   data() {
+    var checkPhone = (rule, value, callback) => {
+      const phoneReg = /^1[3|4|5|6|7|8][0-9]{9}$/;
+      if (!value) {
+        return callback(new Error("电话号码不能为空"));
+      }
+      setTimeout(() => {
+        if (!Number.isInteger(+value)) {
+          callback(new Error("请输入数字值"));
+        } else {
+          if (phoneReg.test(value)) {
+            callback();
+          } else {
+            callback(new Error("电话号码格式不正确"));
+          }
+        }
+      }, 100);
+    };
     return {
       selectList: [],
       selectArr: [
@@ -89,10 +109,7 @@ export default {
         campusId: [
           { required: true, message: "请选择校区", trigger: "change" }
         ],
-
-          phone: [
-          { required: true, message: "请输入手机号码", trigger: "blur" }
-        ]
+        phone: [{ required: true, validator: checkPhone, trigger: "blur" }]
       },
       form: {
         name: "",
@@ -101,7 +118,7 @@ export default {
         personNo: "",
         schoolId: "",
         campusId: "",
-          phone:'',
+        phone: ""
       }
     };
   },
@@ -115,7 +132,7 @@ export default {
     },
     edit(id) {
       this.dialogFormVisible = true;
-        teacherInfo({ id }).then(res => {
+      teacherInfo({ id }).then(res => {
         if (res.code === 200) {
           this.form = Object.assign(this.form, res.data);
           this.$refs["school"].selectValue = res.data.schoolId;
@@ -126,7 +143,7 @@ export default {
     ok(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-            editTeacher(this.form).then(res => {
+          editTeacher(this.form).then(res => {
             if (res.code === 200) {
               this.dialogFormVisible = false;
               this.$message.success(res.msg);

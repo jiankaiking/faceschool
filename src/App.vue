@@ -38,7 +38,11 @@ td {
   margin: 0;
   padding: 0;
 }
-
+.no-warp{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
 .login-form .el-form-item__label {
   color: #ffffff;
 }

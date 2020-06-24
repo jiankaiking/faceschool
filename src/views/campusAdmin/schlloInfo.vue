@@ -25,7 +25,13 @@
         <el-table-column prop="address" label="地址"></el-table-column>
         <el-table-column prop="contacts" label="联系人"></el-table-column>
         <el-table-column prop="contactNumber" label="联系电话"></el-table-column>
-        <el-table-column prop="schoolIntroduction" label="介绍"></el-table-column>
+        <el-table-column prop="schoolIntroduction" label="介绍">
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="dark" :content="scope.row.schoolIntroduction" placement="top">
+              <div class="no-warp">{{scope.row.schoolIntroduction}}</div>
+            </el-tooltip>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="fillAnd(scope.row.id)">补参</el-button>
@@ -82,4 +88,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

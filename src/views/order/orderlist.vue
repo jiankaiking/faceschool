@@ -9,6 +9,7 @@
       <el-form-item>
         <el-date-picker
           @change="getTime"
+          value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
@@ -33,7 +34,10 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-input v-model="searchData.deviceNo" placeholder="输入设备号"></el-input>
+        <el-input
+          v-model="searchData.deviceNo"
+          placeholder="输入设备号"
+        ></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="loadData">查询</el-button>
@@ -42,19 +46,26 @@
     <div class="table-box">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="orderNo" label="订单号"></el-table-column>
-        <el-table-column prop="name" label="支付单号"></el-table-column>
         <el-table-column prop="deviceNo" label="设备号"></el-table-column>
         <el-table-column prop="createTime" label="收款时间"></el-table-column>
         <el-table-column prop="amount" label="订单金额"></el-table-column>
-        <el-table-column prop="discountsAmount" label="优惠金额"></el-table-column>
+        <el-table-column
+          prop="discountsAmount"
+          label="优惠金额"
+        ></el-table-column>
         <el-table-column prop="realAmount" label="实收金额"></el-table-column>
         <el-table-column prop="refundAmount" label="退款金额"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="personNo" label="学籍编号/教师编号"></el-table-column>
+        <el-table-column
+          prop="personNo"
+          label="学籍编号/教师编号"
+        ></el-table-column>
         <el-table-column prop="state" label="状态"></el-table-column>
         <el-table-column label="操作">
-          <template>
-            <el-button type="text">详情</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="headEdit(scope.row.orderId)"
+              >详情</el-button
+            >
             <el-button type="text">退款</el-button>
           </template>
         </el-table-column>
@@ -72,36 +83,41 @@
       >
       </el-pagination>
     </div>
+    <order-info ref="modelForm" />
   </div>
 </template>
 
 <script>
 import myMixins from "../../config/mixins";
 import selectData from "../../components/select/selectData";
+import orderInfo from "./modules/orderInfo";
 export default {
   name: "orderlist",
   mixins: [myMixins],
+  components: {
+    orderInfo
+  },
   data() {
     return {
       searchData: {
         status: "",
-        startTime:'',
-        endTime:'',
+        startTime: "",
+        endTime: "",
         orderNo: "",
-        deviceNo:'',
+        deviceNo: ""
       },
-      statusArr:selectData.orderStatus,
+      statusArr: selectData.orderStatus,
       value1: "",
       url: {
-        list:'/manage/order/list',
+        list: "/manage/order/list"
       }
     };
   },
   methods: {
-    getTime(e){
-      this.searchData.startTime = e[0]
-      this.searchData.endTime = e[1]
-    },
+    getTime(e) {
+      this.searchData.startTime = e[0];
+      this.searchData.endTime = e[1];
+    }
   }
 };
 </script>

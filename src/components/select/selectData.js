@@ -22,12 +22,14 @@ const className = [
 ];
 
 const subsidyStatus = [
+  { code: "", value: "全部" },
   { code: "0", value: "未生效" },
   { code: "1", value: "生效中" },
   { code: "2", value: "已过期" },
 ];
 
 const orderStatus = [
+  { code: "", value: "全部" },
   { code: "1", value: "未支付" },
   { code: "2", value: "通道支付" },
   { code: "3", value: "保证金支付" },

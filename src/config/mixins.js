@@ -4,7 +4,7 @@ const myMixins = {
   data() {
     return {
       loading: false,
-      tableData: [{}],
+      tableData: [],
       laypageParam:[10, 20, 50, 100],
       total:0,
       page: 1,

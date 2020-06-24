@@ -158,12 +158,16 @@ export default {
   methods: {
     upSuccess(e) {
       if (e.code === 200) {
+        this.$message.success(e.msg)
         this.loadData();
+      }else{
+        this.$message.error(e.msg)
       }
     },
     deleteStaff(id) {
       deletePerson({ id }).then(res => {
         if (res.code === 200) {
+          this.$refs[`popover-${id}`].doClose();
           this.loadData();
         }
       });
