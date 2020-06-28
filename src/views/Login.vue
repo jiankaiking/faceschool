@@ -60,11 +60,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.loginIn(this.ruleForm).then(res => {
-            if(res.code === 200){
-              this.$router.push('/')
-            }
-          });
+          this.loginIn(this.ruleForm)
+            .then(() => {
+              this.$router.push("/");
+            })
+            .catch(err => {
+              this.$message.error(err.msg);
+            });
         } else {
           return false;
         }

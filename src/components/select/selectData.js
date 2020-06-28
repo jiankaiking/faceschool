@@ -35,7 +35,16 @@ const orderStatus = [
   { code: "3", value: "保证金支付" },
   { code: "4", value: "已撤销" },
 ]
+
+const payType = [
+  { code: "1", value: "支付宝" },
+  { code: "2", value: "微信" },
+  { code: "3", value: "现金" },
+  { code: "4", value: "刷卡" },
+]
+
 export default {
+  payType,
   teaching,
   educationalType,
   orderStatus,

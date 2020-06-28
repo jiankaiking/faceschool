@@ -35,6 +35,7 @@ export function downFile(url, parameter) {
 
 export function downloadFile(url, fileName, parameter) {
   return downFile(url, parameter).then(data => {
+    console.log(data)
     if (!data || data.size === 0) {
       Message.warning("文件下载失败");
       return;

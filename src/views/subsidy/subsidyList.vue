@@ -64,8 +64,16 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="startTime" label="开始日期"></el-table-column>
-        <el-table-column prop="endTime" label="结束日期"></el-table-column>
+        <el-table-column prop="startTime" label="开始日期">
+          <template slot-scope="scope">
+            {{scope.row.startTime | getTimeFilter}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="endTime" label="结束日期">
+          <template slot-scope="scope">
+            {{scope.row.endTime | getTimeFilter}}
+          </template>
+        </el-table-column>
         <el-table-column prop="createTime" label="创建日期"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">

@@ -56,7 +56,7 @@
             {{scope.row.certificateType | getIdCard}}
           </template>
         </el-table-column>
-        <el-table-column prop="certificateNo" label="证件号"></el-table-column>
+        <el-table-column width="250" prop="certificateNo" label="证件号"></el-table-column>
         <el-table-column prop="personNo" label="教师编号"></el-table-column>
         <el-table-column prop="phone" label="联系电话"></el-table-column>
         <el-table-column prop="faceVerification" label="人脸核验">

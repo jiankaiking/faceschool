@@ -1,7 +1,8 @@
 <template>
   <div class="padding-view">
     <div class="role-nav">
-      <span :class="{ active: role == 0 }" @click="changeRole(0)">学生</span><span>|</span
+      <span :class="{ active: role == 0 }" @click="changeRole(0)">学生</span
+      ><span>|</span
       ><span :class="{ active: role == 1 }" @click="changeRole(1)">教师</span>
     </div>
     <el-form
@@ -15,30 +16,48 @@
       </el-form-item>
       <el-form-item>
         <campus-select
-                :schoolName.sync="searchData.schoolId"
-                :campusId.sync="searchData.campusId"
+          :schoolName.sync="searchData.schoolId"
+          :campusId.sync="searchData.campusId"
         />
       </el-form-item>
-      <el-form-item  v-if="role ==0">
-        <el-input v-model="searchData.classNo" placeholder="请输入班级编号"></el-input>
+      <el-form-item v-if="role == 0">
+        <el-input
+          v-model="searchData.classNo"
+          placeholder="请输入班级编号"
+        ></el-input>
       </el-form-item>
-      <el-form-item  v-if="role ==0">
-        <el-input v-model="searchData.name" placeholder="请输入学生姓名"></el-input>
+      <el-form-item v-if="role == 0">
+        <el-input
+          v-model="searchData.name"
+          placeholder="请输入学生姓名"
+        ></el-input>
       </el-form-item>
-      <el-form-item  v-if="role ==1">
-        <el-input v-model="searchData.queryfield" placeholder="请输入教师编号"></el-input>
+      <el-form-item v-if="role == 1">
+        <el-input
+          v-model="searchData.queryfield"
+          placeholder="请输入教师编号"
+        ></el-input>
       </el-form-item>
-      <el-form-item  v-if="role ==1">
-        <el-input v-model="searchData.phone" placeholder="请输入手机号"></el-input>
+      <el-form-item v-if="role == 1">
+        <el-input
+          v-model="searchData.phone"
+          placeholder="请输入手机号"
+        ></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="loadData">查询</el-button>
-        <el-button type="warning" @click="headAdd">导入</el-button>
+<!--        <el-button type="warning" @click="headAdd">导入</el-button>-->
       </el-form-item>
     </el-form>
 
     <div class="table-box">
-      <el-table :data="tableData" border style="width: 100%" v-if="role == 0" v-loading="loading">
+      <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+        v-if="role == 0"
+        v-loading="loading"
+      >
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="personNo" label="学籍号"></el-table-column>
         <el-table-column prop="schoolName" label="学校"></el-table-column>
@@ -47,22 +66,36 @@
         <el-table-column prop="amount" label="押金余额"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text">充值</el-button>
-            <el-button type="text"  @click="headEdit({id:scope.row.id,role:role})">详情</el-button>
+            <el-button type="text"  @click="rechargePay(scope.row)">充值</el-button>
+            <el-button
+              type="text"
+              @click="headEdit({ id: scope.row.id, role: role })"
+              >详情</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
-      <el-table :data="tableData" border style="width: 100%"  v-if="role ==1"  v-loading="loading">
+      <el-table
+        :data="tableData"
+        border
+        style="width: 100%"
+        v-if="role == 1"
+        v-loading="loading"
+      >
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="schoolName" label="学校"></el-table-column>
         <el-table-column prop="campusName" label="校区"></el-table-column>
         <el-table-column prop="personNo" label="教师编号"></el-table-column>
-        <el-table-column prop="phone" label="联系电话      "></el-table-column>
+        <el-table-column prop="phone" label="联系电话"></el-table-column>
         <el-table-column prop="amount" label="押金余额"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text">充值</el-button>
-            <el-button type="text"  @click="headEdit({id:scope.row.id,role:role})">详情</el-button>
+            <el-button type="text" @click="rechargePay(scope.row)">充值</el-button>
+            <el-button
+              type="text"
+              @click="headEdit({ id: scope.row.id, role: role })"
+              >详情</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -79,18 +112,21 @@
       </el-pagination>
     </div>
     <depositInfo ref="modelForm" />
+    <depositPay ref="payForm" @ok="loadData" />
   </div>
 </template>
 
 <script>
 import myMixins from "../../config/mixins";
 import depositInfo from "./modules/depositInfo";
+import depositPay from "./modules/depositPay";
 import schlloSelect from "../../components/select/schlloSelect";
 import campusSelect from "../../components/select/campusSelect";
 export default {
   name: "blackList",
-  components:{
+  components: {
     schlloSelect,
+    depositPay,
     campusSelect,
     depositInfo
   },
@@ -98,30 +134,34 @@ export default {
   data() {
     return {
       searchData: {
-        schoolId:'',
-        campusId:'',
-        classNo:null,
-        name:null,
-        queryfield:null,
+        schoolId: "",
+        campusId: "",
+        classNo: null,
+        name: null,
+        queryfield: null,
         phone: null
       },
       role: 0,
       value1: "",
       url: {
-        list: '/deposit/studentDepositList' ///deposit/teacherDepositList
+        list: "/deposit/studentDepositList" ///deposit/teacherDepositList
       }
     };
   },
-  methods:{
-    changeRole(e){
+  methods: {
+    rechargePay(row) {
+      this.$refs['payForm'].payInfo(row);
+    },
+    changeRole(e) {
       this.role = e;
-      this.url.list = e == 0?'/deposit/studentDepositList':'/deposit/teacherDepositList'
+      this.url.list =
+        e == 0 ? "/deposit/studentDepositList" : "/deposit/teacherDepositList";
       Object.keys(this.searchData).forEach(key => {
         this.searchData[key] = "";
       });
-      this.loadData()
+      this.loadData();
     }
-  },
+  }
 };
 </script>
 
@@ -138,8 +178,8 @@ export default {
   cursor: pointer;
   font-size: 14px;
 }
-.role-nav span.active{
-    color: #000;
+.role-nav span.active {
+  color: #000;
 }
 .role-nav span:nth-child(2) {
   color: #7ecf99;

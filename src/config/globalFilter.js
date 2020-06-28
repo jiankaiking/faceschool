@@ -29,12 +29,33 @@ data.faceVerification = [
   { code: "1", name: "已核验 " }
 ];
 
+//订单状态
+data.orderStatus = [
+  { code: "1", name: "未支付" },
+  { code: "2", name: "通道支付" },
+  { code: "3", name: "保证金支付" },
+  { code: "4", name: "已撤销" },
+]
+
+
+export function getOrderStatus(val) {
+  for (let i = 0; i < data.orderStatus.length; i++) {
+    if (val === data.orderStatus[i].code) {
+      return data.orderStatus[i].name;
+    }
+  }
+}
+
 export function getFaceStatus(val) {
   for (let i = 0; i < data.faceVerification.length; i++) {
     if (val === data.faceVerification[i].code) {
       return data.faceVerification[i].name;
     }
   }
+}
+
+export function getTimeFilter(val) {
+  return /\d{4}-\d{1,2}-\d{1,2}/g.exec(val)[0]
 }
 
 export function getIdCard(val) {

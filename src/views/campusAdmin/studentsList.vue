@@ -47,30 +47,30 @@
       </el-form-item>
     </el-form>
     <div class="table-box">
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table :data="tableData" v-loading="loading" border style="width: 100%">
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="certificateType" label="证件类型">
           <template slot-scope="scope">
             {{ scope.row.certificateType | getIdCard }}
           </template>
         </el-table-column>
-        <el-table-column prop="certificateNo" label="证件号"></el-table-column>
-        <el-table-column prop="personNo" label="学籍号"></el-table-column>
+        <el-table-column width="200" prop="certificateNo" label="证件号"></el-table-column>
+        <el-table-column width="150" prop="personNo" label="学籍号"></el-table-column>
         <el-table-column prop="schoolName" label="学校"></el-table-column>
         <el-table-column prop="campusName" label="校区"></el-table-column>
-        <el-table-column prop="classNo" label="班级编号"></el-table-column>
+        <el-table-column  prop="classNo" label="班级编号"  width="110" ></el-table-column>
         <el-table-column
           prop="educationStage"
           label="教育阶段"
         ></el-table-column>
         <el-table-column prop="schoolSystem" label="学制"></el-table-column>
         <el-table-column
-          prop="enrollmentTime"
+          prop="enrollmentTime" width="120"
           label="入学时间"
         ></el-table-column>
         <el-table-column prop="guardian" label="监护人"></el-table-column>
         <el-table-column
-          prop="guardianPhone"
+          prop="guardianPhone" width="150"
           label="监护人/本人手机号"
         ></el-table-column>
         <el-table-column prop="faceVerification" label="人脸核验">

@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     changeValue(e) {
-      console.log(e);
+   //   console.log(e);
       this.$emit("update:selectV", e);
     }
   },

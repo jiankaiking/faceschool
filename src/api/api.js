@@ -58,5 +58,17 @@ export const getCityCode = params => getAction("/sysRegion/getRegionByCode", par
 //押金详情
 export const depositInfo = params => getAction("/deposit/depositInfo", params);
 
-//押金详情
+//订单详情
 export const orderInfo = params => getAction("/manage/order/info", params);
+
+//订单退款
+export const orderRefund= params => getAction("/manage/order/pay/refund", params);
+
+
+//押金充值
+export const rechargePay = params => postAction("/deposit/recharge", params);
+
+//补贴金chart数据
+export const subchart = params => getAction("/manage/subsidy/data/bar/chart", params);
+
+

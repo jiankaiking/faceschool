@@ -6,7 +6,8 @@ import store from "@/store";
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 const service = axios.create({
   // baseURL: '/api',
-  baseURL: "http://192.168.0.166:8085",
+   baseURL: "http://192.168.0.166:8085",
+ //baseURL: "http://192.168.0.111:8085",
   timeout: 6000
 });
 const err = error => {
