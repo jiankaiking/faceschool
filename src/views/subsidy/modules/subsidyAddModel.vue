@@ -1,11 +1,18 @@
 <template>
   <el-dialog
-    title="新增补贴"
+    title="补贴信息"
     :close-on-click-modal="false"
     center
+    v-if="dialogFormVisible"
     :visible.sync="dialogFormVisible"
   >
-    <el-form :model="form" label-width="150px" :rules="rules" ref="form">
+    <el-form
+      :validate-on-rule-change="false"
+      :model="form"
+      label-width="150px"
+      :rules="rules"
+      ref="form"
+    >
       <el-row>
         <el-col :span="10">
           <el-form-item label="补贴名称" prop="name">
@@ -15,9 +22,7 @@
         <el-col :span="8" :offset="1">
           <el-form-item
             label="补贴时间"
-            :rules="[
-              { required: true, message: '选择补贴事件', trigger: 'change' }
-            ]"
+            prop="endTime"
           >
             <el-date-picker
               v-model="startEndTime"
@@ -40,7 +45,7 @@
       </el-form-item>
       <div class="center-box">
         <el-form-item label="补贴门槛" label-width="100px" prop="fullMoney">
-          <el-input v-model="form.fullMoney" autocomplete="off">
+          <el-input v-model="form.fullMoney" type="number">
             <template slot="prepend">满</template>
             <template slot="append">元</template>
           </el-input>
@@ -50,7 +55,7 @@
           v-if="form.type == 1"
           prop="subsidyAmount"
         >
-          <el-input v-model="form.subsidyAmount" autocomplete="off">
+          <el-input v-model="form.subsidyAmount" type="number">
             <template slot="prepend">订单减</template>
             <template slot="append">元</template>
           </el-input>
@@ -61,7 +66,7 @@
           label-width="100px"
           v-if="form.type == 2"
         >
-          <el-input v-model="form.subsidyProportion" autocomplete="off">
+          <el-input v-model="form.subsidyProportion" type="number">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
@@ -95,7 +100,7 @@
           <el-col
             :span="6"
             :offset="1"
-            v-if="form.subsidyUpper[0].upperType != 0"
+            v-if="form.subsidyUpper[0].upperType != '无'"
           >
             <el-form-item
               label-width="20px"
@@ -114,7 +119,7 @@
           <el-col
             :span="2"
             :offset="1"
-            v-if="form.subsidyUpper[0].upperType != 0"
+            v-if="form.subsidyUpper[0].upperType != '无'"
           >
             <div class="add-icon" @click="addLimit" v-if="index == 0">
               <i class="el-icon-circle-plus"></i>
@@ -134,7 +139,11 @@
       </el-form-item>
 
       <el-form-item label="补贴时段" label-width="140px">
-        <el-row v-for="(item, index) in form.subsidyTime" :key="index">
+        <el-row
+          style="margin-bottom: 20px"
+          v-for="(item, index) in form.subsidyTime"
+          :key="index"
+        >
           <el-col :span="4">
             <el-form-item
               label-width="20px"
@@ -155,14 +164,14 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="3" :offset="1">
+          <el-col :span="4" :offset="1">
             <el-form-item
               label-width="20px"
               label="  "
               :rules="[
                 {
                   required: true,
-                  message: '请选择补贴时段类型',
+                  message: '选择补贴时段类型',
                   trigger: 'change'
                 }
               ]"
@@ -174,7 +183,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="11" :offset="1" v-if="item.timeType == 1">
+          <el-col :span="11" :offset="1" v-if="item.timeType == 2">
             <el-form-item
               label-width="20px"
               label="  "
@@ -221,11 +230,40 @@
 </template>
 
 <script>
-import { addSubsidy, subsidyInfo } from "../../../api/api";
+import { addSubsidy, subsidyInfo, updateSubsidy } from "../../../api/api";
 
 export default {
   name: "subsidyAddModel",
   data() {
+    var intNum = (rule, value, callback) => {
+      if (value < 0) {
+        return callback(new Error("请输入正确的数值"));
+      } else if (!value) {
+        return callback(new Error("请输入补贴金额"));
+      } else {
+        callback();
+      }
+    };
+    var maxMoney = (rule, value, callback) => {
+      if (value < 0) {
+        return callback(new Error("请输入正确的数值"));
+      } else if (!value) {
+        return callback(new Error("请输入补贴金额"));
+      } else if (+value >= +this.form.fullMoney) {
+        return callback(new Error("补贴金额要小于门槛金额"));
+      } else {
+        callback();
+      }
+    };
+    var maxSubsidyProportion = (rule, value, callback) => {
+      if (value < 0) {
+        return callback(new Error("请输入正确的数值"));
+      } else if (!value) {
+        return callback(new Error("请输入补贴比例"));
+      } else {
+        callback();
+      }
+    };
     return {
       dialogFormVisible: false,
       limitDate: [
@@ -251,22 +289,16 @@ export default {
           { required: true, message: "请输入补贴名称", target: "blur" }
         ],
         fullMoney: [
-          { required: true, message: "请输入补贴门槛", target: "blur" }
+          { required: true, validator: intNum, target: "blur" }
         ],
         subsidyAmount: [
-          { required: true, message: "请输入补贴金额", target: "blur" }
+          { required: true, validator: maxMoney, target: "blur" }
         ],
         subsidyProportion: [
-          { required: true, message: "请输入补贴比例", target: "blur" }
+          { required: true, validator: maxSubsidyProportion, target: "blur" }
         ],
-        subsidyUpper: {
-          upperType: [
-            { required: true, message: "请输入补贴比例", target: "blur" }
-          ],
-          upperMoney: [
-            { required: true, message: "请输入补贴比例", target: "blur" }
-          ]
-        },
+        endTime:[{ required: true, message: "请选择时间", target: "blur" }],
+        subsidyUpper: {},
         subsidyTime: {}
       },
       form: {
@@ -280,40 +312,53 @@ export default {
         subsidyProportion: "",
         object: "1",
         isShared: 0,
-        subsidyUpper: [{ upperType: "", upperMoney: "" }],
+        subsidyUpper: [{ upperType: "无", upperMoney: "" }],
         subsidyTime: [{ week: "", timeType: "", startEndTime: "" }]
       }
     };
   },
   methods: {
-    changeLimit(e) {
-      e == '无'
-        ? (this.form.subsidyUpper = [{ upperType: "无", upperMoney: "" }])
-        : this.limitDate.forEach(item => {
-            item.isExist = false;
-            this.form.subsidyUpper.forEach(_item => {
-              if (item.value === _item.upperType) {
-                item.isExist = true;
-              }
-            });
-          });
+    intNum(rule, value, callback) {
+      if (value < 0) {
+        return callback(new Error("请输入正确的数值"));
+      }
     },
-    changeSubsidies(e) {
-      e == '全部'
-        ? (this.form.subsidyTime = [
-            { week: "全部", timeType: "", startEndTime: "" }
-          ])
-        : this.SubsidiesDate.forEach((item, index) => {
-            this.SubsidiesDate[index].isExist = false;
-            this.form.subsidyTime.forEach(_item => {
-              if (item.value === _item.week) {
-                this.SubsidiesDate[index].isExist = true;
-              }
-            });
-          });
+    changeLimit(e) {
+      if (e == "无") {
+        this.form.subsidyUpper = [{ upperType: "无", upperMoney: "" }];
+      }
+      this.limitDate.forEach(item => {
+        item.isExist = false;
+        this.form.subsidyUpper.forEach(_item => {
+          if (item.value === _item.upperType) {
+            item.isExist = true;
+          }
+        });
+      });
+    },
+    changeSubsidies() {
+      // this.SubsidiesDate.forEach((item, index) => {
+      //   this.SubsidiesDate[index].isExist = false;
+      //   this.form.subsidyTime.forEach(_item => {
+      //     console.log(_item);
+      //     if (item.value === _item.week && _item.timeType === "1") {
+      //       console.log(_item.timeType);
+      //       this.SubsidiesDate[index].isExist = true;
+      //     }
+      //   });
+      // });
+      // this.SubsidiesDate.forEach((item, index) => {
+      //   this.SubsidiesDate[index].isExist = false;
+      //   this.form.subsidyTime.forEach(_item => {
+      //     if (item.value === _item.week) {
+      //       this.SubsidiesDate[index].isExist = true;
+      //     }
+      //   });
+      // });
     },
     add() {
       this.dialogFormVisible = true;
+      this.startEndTime = "";
       this.form = {
         name: "",
         startTime: "",
@@ -325,12 +370,13 @@ export default {
         subsidyProportion: "",
         object: "1",
         isShared: 0,
-        subsidyUpper: [{ upperType: "", upperMoney: "" }],
+        subsidyUpper: [{ upperType: "无", upperMoney: "" }],
         subsidyTime: [{ week: "", timeType: "", startEndTime: "" }]
       };
     },
     edit(id) {
       this.dialogFormVisible = true;
+
       subsidyInfo({ id }).then(res => {
         this.startEndTime = [res.data.startTime, res.data.endTime];
         res.data.subsidyTime.forEach(item => {
@@ -355,19 +401,65 @@ export default {
       this.changeLimit();
     },
     addTime() {
-      this.form.subsidyTime[0].value == 0 && this.$message.error("选择全部了");
-      this.form.subsidyTime[0].value != 0 &&
-        this.form.subsidyTime.push({
-          week: "",
-          timeType: "",
-          startEndTime: ""
+      // this.SubsidiesDate.forEach((item, index) => {
+      //   this.SubsidiesDate[index].isExist = false;
+      //   this.form.subsidyTime.forEach(_item => {
+      //     console.log(_item);
+      //     if (item.value === _item.week && _item.timeType === "1") {
+      //       console.log(_item.timeType);
+      //       this.SubsidiesDate[index].isExist = true;
+      //     }
+      //   });
+      // });
+      if (
+        this.form.subsidyTime[0].week == "全部" &&
+        this.form.subsidyTime[0].timeType == 1
+      ) {
+        this.SubsidiesDate.forEach((item, index) => {
+          item.isExist = true;
+          if (item.value == "全部") {
+            this.SubsidiesDate[index].isExist = false;
+          }
         });
+        this.$message.error("选择全部了");
+        return;
+      } else {
+        this.form.subsidyTime.forEach(item => {
+          if (item.week == "" || item.timeType == "") {
+            this.$message.error("请输入完整数据在添加");
+          }
+        });
+      }
+      this.form.subsidyTime.push({
+        week: "",
+        timeType: "1",
+        startEndTime: ""
+      });
     },
     deleteTime(index) {
       this.form.subsidyTime.splice(index, 1);
       this.changeSubsidies();
     },
+    addSubsidy() {
+      addSubsidy(this.form).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.msg);
+          this.dialogFormVisible = false;
+          this.$emit("ok");
+        }
+      });
+    },
+    updateSubsidy() {
+      updateSubsidy(this.form).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.msg);
+          this.dialogFormVisible = false;
+          this.$emit("ok");
+        }
+      });
+    },
     ok(formName) {
+      console.log(formName);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.form.subsidyTime.forEach(item => {
@@ -378,21 +470,14 @@ export default {
             this.$message.error("请选择时间");
             return;
           }
-          // this.form = JSON.stringify()
-          addSubsidy(this.form).then(res => {
-            if (res.code === 200) {
-              this.$message.success(res.msg);
-              this.dialogFormVisible = false;
-              this.$emit("ok");
-            }
-          });
+          this.form.subsidyProportion = +this.form.subsidyProportion;
+          this.form.id ? this.updateSubsidy() : this.addSubsidy();
         } else {
           return false;
         }
       });
     }
-  },
-  watch: {}
+  }
 };
 </script>
 <style>

@@ -13,7 +13,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="loadData">查询</el-button>
+        <el-button type="primary" @click="searchLick">查询</el-button>
         <el-button type="primary" @click="headAdd">新增</el-button>
       </el-form-item>
     </el-form>
@@ -51,7 +51,7 @@
       >
       </el-pagination>
     </div>
-    <campus-add-model ref="modelForm" />
+    <campus-add-model @ok="loadData" ref="modelForm" />
   </div>
 </template>
 

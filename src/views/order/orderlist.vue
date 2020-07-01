@@ -41,14 +41,14 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="loadData">查询</el-button>
+        <el-button type="primary" @click="searchLick">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="table-box">
       <el-table :data="tableData" v-loading="loading" border style="width: 100%">
         <el-table-column width="300" prop="orderNo" label="订单号"></el-table-column>
         <el-table-column width="200" prop="deviceNo" label="设备号"></el-table-column>
-        <el-table-column prop="createTime" label="收款时间"></el-table-column>
+        <el-table-column width="190" prop="createTime" label="收款时间"></el-table-column>
         <el-table-column prop="amount" label="订单金额"></el-table-column>
         <el-table-column
           prop="discountsAmount"
@@ -68,7 +68,7 @@
             <el-button type="text" @click="headEdit(scope.row.orderId)"
               >详情</el-button
             >
-            <el-button type="text" @click="refund(scope.row)">退款</el-button>
+            <el-button v-if="scope.row.state == 2 ||scope.row.state == 3 " type="text" @click="refund(scope.row)">退款</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -86,7 +86,7 @@
       </el-pagination>
     </div>
     <order-info ref="modelForm" />
-    <order-refund-model ref="orderRefund" />
+    <order-refund-model @ok="loadData" ref="orderRefund" />
   </div>
 </template>
 

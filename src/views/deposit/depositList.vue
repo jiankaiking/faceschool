@@ -45,8 +45,20 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="loadData">查询</el-button>
-<!--        <el-button type="warning" @click="headAdd">导入</el-button>-->
+        <el-button type="primary" @click="searchLick">查询</el-button>
+      </el-form-item>
+      <el-form-item>
+        <el-upload
+          ref="upload"
+          :headers="headers"
+          :on-success="upSuccess"
+          accept=".xlsx"
+          :action="url.exportUrl"
+          :with-credentials="true"
+          :show-file-list="false"
+        >
+          <el-button type="warning">导入</el-button>
+        </el-upload>
       </el-form-item>
     </el-form>
 
@@ -66,7 +78,9 @@
         <el-table-column prop="amount" label="押金余额"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text"  @click="rechargePay(scope.row)">充值</el-button>
+            <el-button type="text" @click="rechargePay(scope.row)"
+              >充值</el-button
+            >
             <el-button
               type="text"
               @click="headEdit({ id: scope.row.id, role: role })"
@@ -90,7 +104,9 @@
         <el-table-column prop="amount" label="押金余额"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="rechargePay(scope.row)">充值</el-button>
+            <el-button type="text" @click="rechargePay(scope.row)"
+              >充值</el-button
+            >
             <el-button
               type="text"
               @click="headEdit({ id: scope.row.id, role: role })"
@@ -117,6 +133,7 @@
 </template>
 
 <script>
+import BASE_URL from "../../config/baseUrl";
 import myMixins from "../../config/mixins";
 import depositInfo from "./modules/depositInfo";
 import depositPay from "./modules/depositPay";
@@ -141,16 +158,20 @@ export default {
         queryfield: null,
         phone: null
       },
+      headers: {
+        Authorization: "Bearer " + this.$store.state.token
+      },
       role: 0,
       value1: "",
       url: {
+        exportUrl: BASE_URL + "/deposit/import",
         list: "/deposit/studentDepositList" ///deposit/teacherDepositList
       }
     };
   },
   methods: {
     rechargePay(row) {
-      this.$refs['payForm'].payInfo(row);
+      this.$refs["payForm"].payInfo(row);
     },
     changeRole(e) {
       this.role = e;
@@ -160,6 +181,13 @@ export default {
         this.searchData[key] = "";
       });
       this.loadData();
+    },
+    upSuccess(e) {
+      if (e.code === 200) {
+        this.$message.success("导入成功");
+      }else{
+        this.$message.error("导入失败");
+      }
     }
   }
 };

@@ -44,21 +44,22 @@ export default {
   },
   methods: {
     refund(row) {
-        console.log(row)
+      Object.keys(this.form).forEach(key => (this.form[key] = ""));
       this.dialogFormVisible = true;
       this.form.orderId = row.orderId;
-      this.form.amount = row.amount;
+      this.form.amount = row.realAmount;
     },
     ok(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           orderRefund(this.form).then(res => {
             if (res.code === 200) {
-              this.dialogFormVisible = false;
               this.$message.success("退款成功");
-            }else{
-                this.$message.error(res.msg)
+              this.$emit("ok");
+            } else {
+              this.$message.error(res.msg);
             }
+            this.dialogFormVisible = false;
           });
         } else {
           return false;

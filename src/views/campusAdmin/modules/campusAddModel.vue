@@ -7,8 +7,11 @@
     :visible.sync="dialogFormVisible"
   >
     <el-form :model="form" ref="form" :rules="rules" label-width="100px">
-      <el-form-item label="学校" prop="parentId">
+      <el-form-item label="学校" prop="parentId" v-if="!form.id">
         <schllo-select ref="school" :schoolName.sync="form.parentId" />
+      </el-form-item>
+      <el-form-item label="学校" prop="parentId"  v-if="form.id">
+        <schllo-select ref="school" :schoolName.sync="form.parentId == 0?form.id:form.parentId" />
       </el-form-item>
       <el-form-item label="校区" prop="campusName">
         <el-input v-model="form.campusName" autocomplete="off"></el-input>
@@ -71,10 +74,10 @@ export default {
       cityShow:false,
       rules: {
         parentId: [
-          { required: true, message: "请选择地址", trigger: "change" }
+          { required: true, message: "请选择学校名称", trigger: "change" }
         ],
         campusName: [
-          { required: true, message: "请输入学校名称", trigger: "blur" }
+          { required: true, message: "请输入校区名称", trigger: "blur" }
         ],
         regionLongCode: [
           { required: true, message: "请选择地址", trigger: "change" }
@@ -113,7 +116,6 @@ export default {
   },
   methods: {
     clickCity(){
-      console.log(123)
       this.cityShow = false;
     },
     add() {

@@ -35,13 +35,28 @@ data.orderStatus = [
   { code: "2", name: "通道支付" },
   { code: "3", name: "保证金支付" },
   { code: "4", name: "已撤销" },
+  { code: "5", name: "已关闭" },
 ]
 
+//押金类型
+data.sceneType = [
+  { code: "1", name: "预存" },
+  { code: "2", name: "抵扣" },
+  { code: "3", name: "退款回冲" },
+]
 
 export function getOrderStatus(val) {
   for (let i = 0; i < data.orderStatus.length; i++) {
     if (val === data.orderStatus[i].code) {
       return data.orderStatus[i].name;
+    }
+  }
+}
+
+export function getScene(val) {
+  for (let i = 0; i < data.sceneType.length; i++) {
+    if (val === data.sceneType[i].code) {
+      return data.sceneType[i].name;
     }
   }
 }

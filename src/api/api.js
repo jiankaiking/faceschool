@@ -47,13 +47,22 @@ export const teacherTemplate = () => getAction("/person/teacherTemplate");
 //新增补贴
 export const addSubsidy = params => postAction("/subsidy/saveSubsidy", params);
 
+//补贴金详情
 export const subsidyInfo = params => getAction("/subsidy/info", params);
 
+//补贴金编辑
+export const updateSubsidy = params => postAction("/subsidy/updateSubsidy", params);
+
+
+//删除补贴金
+export const delSubsidy = params => getAction("/subsidy/delSubsidy", params);
 
 //押金数据详情
-export const subsidyInfoData = params => getAction("/manage/subsidy/data/detail", params);
+export const subsidyInfoData = params =>
+  getAction("/manage/subsidy/data/detail", params);
 
-export const getCityCode = params => getAction("/sysRegion/getRegionByCode", params);
+export const getCityCode = params =>
+  getAction("/sysRegion/getRegionByCode", params);
 
 //押金详情
 export const depositInfo = params => getAction("/deposit/depositInfo", params);
@@ -62,13 +71,23 @@ export const depositInfo = params => getAction("/deposit/depositInfo", params);
 export const orderInfo = params => getAction("/manage/order/info", params);
 
 //订单退款
-export const orderRefund= params => getAction("/manage/order/pay/refund", params);
-
+export const orderRefund = params =>
+  getAction("/manage/order/pay/refund", params);
 
 //押金充值
 export const rechargePay = params => postAction("/deposit/recharge", params);
 
 //补贴金chart数据
-export const subchart = params => getAction("/manage/subsidy/data/bar/chart", params);
+export const subchart = params =>
+  getAction("/manage/subsidy/data/bar/chart", params);
 
 
+//移除黑名单
+export const settingList = params => getAction("/school/black/setting/list", params);
+
+//移除黑名单
+export const removeblack = params => getAction("/remove/black", params);
+
+//设置黑名单金额
+export const settingBlack = params =>
+  getAction("/setting/black/amount", params);

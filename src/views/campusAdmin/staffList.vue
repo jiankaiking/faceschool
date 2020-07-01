@@ -28,7 +28,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="loadData">查询</el-button>
+        <el-button type="primary" @click="searchLick">查询</el-button>
         <el-button type="primary" @click="headAdd">新增</el-button>
         <el-button type="warning" @click="downFile">下载模板</el-button>
       </el-form-item>
@@ -38,7 +38,7 @@
           :headers="headers"
           :on-success="upSuccess"
           accept=".xlsx"
-          action="http://192.168.0.166:8085/person/importTeacher"
+          :action="url.exportUrl"
           :with-credentials="true"
           :show-file-list="false"
         >
@@ -125,6 +125,7 @@
 
 <script>
 import myMixins from "../../config/mixins";
+import BASE_URL from "../../config/baseUrl";
 import staffAddModel from "./modules/staffAddModel";
 import schlloSelect from "../../components/select/schlloSelect";
 import campusSelect from "../../components/select/campusSelect";
@@ -151,6 +152,7 @@ export default {
         phone: ""
       },
       url: {
+        exportUrl: BASE_URL + "/person/importTeacher",
         list: "/person/teacherList"
       }
     };
@@ -158,7 +160,7 @@ export default {
   methods: {
     upSuccess(e) {
       if (e.code === 200) {
-        this.$message.success(e.msg)
+        this.$message.warning(`成功${e.data.success}条,失败${e.data.fail}条`)
         this.loadData();
       }else{
         this.$message.error(e.msg)

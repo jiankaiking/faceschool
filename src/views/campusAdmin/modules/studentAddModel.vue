@@ -173,9 +173,9 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
-      this.$nextTick(() => {
-        this.$refs["school"].selectValue = "";
-      });
+      // this.$nextTick(() => {
+      //   this.$refs["school"].selectValue = "";
+      // });
       this.dialogFormVisible = true;
     },
     edit(id) {
@@ -209,6 +209,7 @@ export default {
       });
     },
     getClass(id) {
+      console.log(123)
       classDown({ campusId: id }).then(res => {
         if (res.code === 200) {
           this.classArr = res.data;
@@ -228,8 +229,9 @@ export default {
     "form.campusId": {
       immediate: true,
       handler(newVal) {
-        this.getClass(newVal);
-        newVal && this.getSelectList(newVal);
+        this.form.classNo = "";
+        newVal && this.getClass(newVal);
+
       }
     }
   }

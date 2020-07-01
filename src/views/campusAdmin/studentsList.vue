@@ -28,7 +28,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="loadData">查询</el-button>
+        <el-button type="primary" @click="searchLick">查询</el-button>
         <el-button type="primary" @click="headAdd">新增</el-button>
         <el-button type="warning" @click="downFile">下载模板</el-button>
       </el-form-item>
@@ -38,7 +38,7 @@
           :headers="headers"
           :on-success="upSuccess"
           accept=".xlsx"
-          action="http://192.168.0.166:8085/person/importStudent"
+          :action="url.exportUrl"
           :with-credentials="true"
           :show-file-list="false"
         >
@@ -64,10 +64,11 @@
           label="教育阶段"
         ></el-table-column>
         <el-table-column prop="schoolSystem" label="学制"></el-table-column>
-        <el-table-column
-          prop="enrollmentTime" width="120"
-          label="入学时间"
-        ></el-table-column>
+        <el-table-column prop="enrollmentTime" width="120" label="入学时间">
+          <template slot-scope="scope">
+            {{ scope.row.enrollmentTime | getTimeFilter }}
+          </template>
+        </el-table-column>
         <el-table-column prop="guardian" label="监护人"></el-table-column>
         <el-table-column
           prop="guardianPhone" width="150"
@@ -144,7 +145,7 @@ import schlloSelect from "../../components/select/schlloSelect";
 import campusSelect from "../../components/select/campusSelect";
 import { deletePerson, changeStatus } from "../../api/api";
 import { downloadFile } from "../../api/manage";
-
+import BASE_URL from "../../config/baseUrl";
 export default {
   name: "studentsList",
   mixins: [myMixins],
@@ -165,6 +166,7 @@ export default {
         queryField: ""
       },
       url: {
+        exportUrl: BASE_URL + "/person/importStudent",
         list: "/person/studentList"
       }
     };
@@ -180,7 +182,7 @@ export default {
     },
     upSuccess(e) {
       if (e.code === 200) {
-        this.$message.success(e.msg)
+        this.$message.warning(`成功${e.data.success}条,失败${e.data.fail}条`)
         this.loadData();
       }else{
         this.$message.error(e.msg)

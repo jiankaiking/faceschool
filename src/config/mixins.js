@@ -31,6 +31,11 @@ const myMixins = {
       searchParame = { ...searchParame, ...this.searchData };
       return searchParame;
     },
+    searchLick(){
+      this.size = 10;
+      this.page = 1;
+      this.loadData()
+    },
     headAdd() {
       this.$refs['modelForm'].add();
     },

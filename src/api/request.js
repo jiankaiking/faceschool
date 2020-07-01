@@ -1,13 +1,12 @@
 import { Notification, Message } from "element-ui";
+import BASE_URL from "../config/baseUrl";
 import axios from "axios";
 import store from "@/store";
 // import qs from "qs";
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 const service = axios.create({
-  // baseURL: '/api',
-   baseURL: "http://192.168.0.166:8085",
- //baseURL: "http://192.168.0.111:8085",
+  baseURL: BASE_URL,
   timeout: 6000
 });
 const err = error => {
@@ -69,7 +68,7 @@ const err = error => {
 service.interceptors.request.use(
   config => {
     // config.headers["Content-Type"] = "application/x-www-form-urlencoded";
-     config.headers["Content-Type"] = "application/json;charset=UTF-8";
+    config.headers["Content-Type"] = "application/json;charset=UTF-8";
 
     const token = localStorage.getItem("token");
     if (token) {
