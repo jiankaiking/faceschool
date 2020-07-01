@@ -86,7 +86,7 @@ export default {
 }
 
 .login-bg {
-  background: url("../assets/img/loginbg.jpg") 50% 50% / cover;
+  background: url("http://chuantu.xyz/t6/739/1593570505x-1404755695.jpg") 50% 50% / cover;
   height: 100%;
   position: relative;
 }

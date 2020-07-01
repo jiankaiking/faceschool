@@ -15,11 +15,6 @@ const routes = [
     redirect: "/schlloinfo",
     children: [
       {
-        path: "/home",
-        name: "home",
-        component: () => import("../views/Home.vue")
-      },
-      {
         path: "/campuslist",
         name: "campusList",
         component: () => import("../views/campusAdmin/campusList.vue")

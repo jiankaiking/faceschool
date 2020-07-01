@@ -28,6 +28,9 @@
       <el-form-item label="支付类型" prop="payType">
         <global-select type="payType" :select-v.sync="payData.payType" />
       </el-form-item>
+      <el-form-item label="订单号" prop="orderNo">
+        <el-input v-model="payData.orderNo" placeholder="请输入订单号" />
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -56,11 +59,15 @@ export default {
         ],
         payType: [
           { required: true, message: "请选择充值方式", trigger: "change" }
+        ],
+        orderNo: [
+          { required: true, message: "请输入订单号", trigger: "blur" }
         ]
       },
       payData: {
         amount: "",
-        payType: ""
+        payType: "",
+        orderNo:'',
       }
     };
   },

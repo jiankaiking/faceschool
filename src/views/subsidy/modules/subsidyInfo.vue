@@ -7,7 +7,7 @@
       <span class="line">|</span>
       <span>共补贴:{{ topInfo.totalCount }}笔</span>
       <span class="line">|</span>
-      <span>总金额:{{ topInfo.totalAmount }}笔</span>
+      <span>总金额:{{ topInfo.totalAmount }}元</span>
       <span class="line"></span>
       <el-date-picker
         v-model="chartTime"
@@ -55,8 +55,8 @@
           prop="personNo"
           label="学籍编号/教师编号"
         ></el-table-column>
-        <el-table-column prop="amount" label="订单金额"></el-table-column>
-        <el-table-column prop="orderAmount" label="补贴金额"></el-table-column>
+        <el-table-column prop="orderAmount" label="订单金额"></el-table-column>
+        <el-table-column prop="amount" label="补贴金额"></el-table-column>
         <el-table-column prop="createTime" label="补贴时间"></el-table-column>
       </el-table>
       <el-pagination

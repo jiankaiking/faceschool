@@ -2,8 +2,8 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import "./plugins/element.js";
-import echarts from 'echarts'
+ import "./plugins/element.js";
+ import echarts from 'echarts'
 import * as filters from './config/globalFilter'
 
 Object.keys(filters).forEach(key => {
@@ -11,7 +11,7 @@ Object.keys(filters).forEach(key => {
 })
 
 
-Vue.prototype.$echarts = echarts;
+ Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
 
 new Vue({

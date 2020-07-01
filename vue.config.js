@@ -5,16 +5,14 @@ module.exports = {
     port: 8080,
     https: false,
     hotOnly: false,
-
+    compress: true,
     proxy:null,
-    // proxy: {
-    //   "/api": {
-    //     target: "http://192.168.0.166:8085",
-    //     changeOrigin: true,
-    //     ws: true,
-    //     pathRewrite: {
-    //       "^/api": ""
-    //     }
+    // configureWebpack: {
+    //   externals: {
+    //     vue: "Vue",
+    //     vuex: "Vuex",
+    //     "vue-router": "VueRouter",
+    //     "element-ui": "ELEMENT"
     //   }
     // }
   }
