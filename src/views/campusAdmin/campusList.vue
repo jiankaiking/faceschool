@@ -22,20 +22,33 @@
         <el-table-column prop="schoolName" label="学校名称"></el-table-column>
         <el-table-column prop="campusName" label="校区"></el-table-column>
         <el-table-column prop="address" label="地址"></el-table-column>
-        <el-table-column prop="educationStage" label="教育阶段"></el-table-column>
+        <el-table-column
+          prop="educationStage"
+          label="教育阶段"
+        ></el-table-column>
         <el-table-column prop="schoolSystem" label="学制"></el-table-column>
         <el-table-column prop="contacts" label="联系人"></el-table-column>
-        <el-table-column prop="contactNumber" label="联系方式"></el-table-column>
+        <el-table-column
+          prop="contactNumber"
+          label="联系方式"
+        ></el-table-column>
         <el-table-column prop="schoolIntroduction" label="介绍">
           <template slot-scope="scope">
-            <el-tooltip class="item" effect="dark" :content="scope.row.schoolIntroduction" placement="top">
-              <div class="no-warp">{{scope.row.schoolIntroduction}}</div>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="scope.row.schoolIntroduction"
+              placement="top"
+            >
+              <div class="no-warp">{{ scope.row.schoolIntroduction }}</div>
             </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
+            <el-button type="text" @click="headEdit(scope.row.id)"
+              >编辑</el-button
+            >
           </template>
         </el-table-column>
       </el-table>

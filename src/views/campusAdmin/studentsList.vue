@@ -47,18 +47,35 @@
       </el-form-item>
     </el-form>
     <div class="table-box">
-      <el-table :data="tableData" v-loading="loading" border style="width: 100%">
+      <el-table
+        :data="tableData"
+        v-loading="loading"
+        border
+        style="width: 100%"
+      >
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="certificateType" label="证件类型">
           <template slot-scope="scope">
             {{ scope.row.certificateType | getIdCard }}
           </template>
         </el-table-column>
-        <el-table-column width="200" prop="certificateNo" label="证件号"></el-table-column>
-        <el-table-column width="150" prop="personNo" label="学籍号"></el-table-column>
+        <el-table-column
+          width="200"
+          prop="certificateNo"
+          label="证件号"
+        ></el-table-column>
+        <el-table-column
+          width="150"
+          prop="personNo"
+          label="学籍号"
+        ></el-table-column>
         <el-table-column prop="schoolName" label="学校"></el-table-column>
         <el-table-column prop="campusName" label="校区"></el-table-column>
-        <el-table-column  prop="classNo" label="班级编号"  width="110" ></el-table-column>
+        <el-table-column
+          prop="classNo"
+          label="班级编号"
+          width="110"
+        ></el-table-column>
         <el-table-column
           prop="educationStage"
           label="教育阶段"
@@ -71,7 +88,8 @@
         </el-table-column>
         <el-table-column prop="guardian" label="监护人"></el-table-column>
         <el-table-column
-          prop="guardianPhone" width="150"
+          prop="guardianPhone"
+          width="150"
           label="监护人/本人手机号"
         ></el-table-column>
         <el-table-column prop="faceVerification" label="人脸核验">
@@ -93,7 +111,9 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
+            <el-button type="text" @click="headEdit(scope.row.id)"
+              >编辑</el-button
+            >
             <el-popover
               width="160"
               :ref="`popover-${scope.row.id}`"
@@ -134,7 +154,7 @@
       >
       </el-pagination>
     </div>
-    <student-add-model ref="modelForm" @ok="loadData"/>
+    <student-add-model ref="modelForm" @ok="loadData" />
   </div>
 </template>
 
@@ -182,10 +202,10 @@ export default {
     },
     upSuccess(e) {
       if (e.code === 200) {
-        this.$message.warning(`成功${e.data.success}条,失败${e.data.fail}条`)
+        this.$message.warning(`成功${e.data.success}条,失败${e.data.fail}条`);
         this.loadData();
-      }else{
-        this.$message.error(e.msg)
+      } else {
+        this.$message.error(e.msg);
       }
     },
     downFile() {

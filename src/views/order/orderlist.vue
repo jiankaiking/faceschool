@@ -45,10 +45,27 @@
       </el-form-item>
     </el-form>
     <div class="table-box">
-      <el-table :data="tableData" v-loading="loading" border style="width: 100%">
-        <el-table-column width="300" prop="orderNo" label="订单号"></el-table-column>
-        <el-table-column width="200" prop="deviceNo" label="设备号"></el-table-column>
-        <el-table-column width="190" prop="createTime" label="收款时间"></el-table-column>
+      <el-table
+        :data="tableData"
+        v-loading="loading"
+        border
+        style="width: 100%"
+      >
+        <el-table-column
+          width="300"
+          prop="orderNo"
+          label="订单号"
+        ></el-table-column>
+        <el-table-column
+          width="200"
+          prop="deviceNo"
+          label="设备号"
+        ></el-table-column>
+        <el-table-column
+          width="190"
+          prop="createTime"
+          label="收款时间"
+        ></el-table-column>
         <el-table-column prop="amount" label="订单金额"></el-table-column>
         <el-table-column
           prop="discountsAmount"
@@ -57,10 +74,13 @@
         <el-table-column prop="realAmount" label="实收金额"></el-table-column>
         <el-table-column prop="refundAmount" label="退款金额"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
-        <el-table-column prop="personNo" label="学籍编号/教师编号"></el-table-column>
+        <el-table-column
+          prop="personNo"
+          label="学籍编号/教师编号"
+        ></el-table-column>
         <el-table-column prop="state" label="状态">
           <template slot-scope="scope">
-            {{scope.row.state | getOrderStatus}}
+            {{ scope.row.state | getOrderStatus }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -68,7 +88,12 @@
             <el-button type="text" @click="headEdit(scope.row.orderId)"
               >详情</el-button
             >
-            <el-button v-if="scope.row.state == 2 ||scope.row.state == 3 " type="text" @click="refund(scope.row)">退款</el-button>
+            <el-button
+              v-if="scope.row.state == 2 || scope.row.state == 3"
+              type="text"
+              @click="refund(scope.row)"
+              >退款</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -94,7 +119,7 @@
 import myMixins from "../../config/mixins";
 import selectData from "../../components/select/selectData";
 import orderInfo from "./modules/orderInfo";
-import orderRefundModel from './modules/orderRefund'
+import orderRefundModel from "./modules/orderRefund";
 export default {
   name: "orderlist",
   mixins: [myMixins],
@@ -120,13 +145,18 @@ export default {
   },
   methods: {
     getTime(e) {
-      this.searchData.startTime = e[0];
-      this.searchData.endTime = e[1];
+      if (e) {
+        this.searchData.startTime = e[0];
+        this.searchData.endTime = e[1];
+      } else {
+        this.searchData.startTime = "";
+        this.searchData.endTime = "";
+      }
     },
-    refund(row){
-      console.log(row)
-      this.$refs["orderRefund"].refund(row)
-    },
+    refund(row) {
+      console.log(row);
+      this.$refs["orderRefund"].refund(row);
+    }
   }
 };
 </script>

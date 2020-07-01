@@ -6,17 +6,22 @@
   >
     <div class="info-title">{{ role == 1 ? "教师信息" : "学生信息" }}</div>
     <div class="info-messages">
-      <span>姓名:{{ depositInfo.name }}</span>
-      <span v-if="role == 1">教师编号:{{ depositInfo.personNo }}</span>
+      <span>姓名：{{ depositInfo.name }}</span>
+      <span v-if="role == 1">教师编号：{{ depositInfo.personNo }}</span>
       <span v-if="role == 0">学籍号:{{ depositInfo.personNo }}</span>
-      <span>学校:{{ depositInfo.schoolName }}</span>
-      <span>校区:{{ depositInfo.campusName }}</span>
-      <span v-if="role == 0">班级编号:{{ depositInfo.classNo }}</span>
-      <span>押金余额:{{ depositInfo.amount }}</span>
+      <span>学校：{{ depositInfo.schoolName }}</span>
+      <span>校区：{{ depositInfo.campusName }}</span>
+      <span v-if="role == 0">班级编号：{{ depositInfo.classNo }}</span>
+      <span>押金余额：{{ depositInfo.amount }}</span>
     </div>
     <div class="info-title">押金详情</div>
     <div style="margin-top: 30px;">
-      <el-table :data="depositInfo.depositIog" border style="width: 100%">
+      <el-table
+        :data="depositInfo.depositIog"
+        border
+        height="400"
+        style="width: 100%;"
+      >
         <el-table-column prop="orderNo" label="订单号"></el-table-column>
         <el-table-column prop="createTime" label="时间"></el-table-column>
         <el-table-column prop="scene" label="类型">

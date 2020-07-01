@@ -17,8 +17,7 @@ export default {
     type: {
       type: String
     },
-    selectV: {
-    }
+    selectV: {}
   },
   data() {
     return {
@@ -32,7 +31,7 @@ export default {
   },
   methods: {
     changeValue(e) {
-   //   console.log(e);
+      //   console.log(e);
       this.$emit("update:selectV", e);
     }
   },
@@ -40,7 +39,7 @@ export default {
     selectV: {
       immediate: true,
       handler(newVal) {
-         this.selectValue = newVal;
+        this.selectValue = newVal;
       }
     }
   }

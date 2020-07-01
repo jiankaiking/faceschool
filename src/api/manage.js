@@ -6,7 +6,7 @@ export function postAction(url, parameter) {
   return axios({
     url: url,
     method: "post",
-    dataType:'JSON',
+    dataType: "JSON",
     data: parameter
   });
 }
@@ -35,7 +35,7 @@ export function downFile(url, parameter) {
 
 export function downloadFile(url, fileName, parameter) {
   return downFile(url, parameter).then(data => {
-    console.log(data)
+    console.log(data);
     if (!data || data.size === 0) {
       Message.warning("文件下载失败");
       return;

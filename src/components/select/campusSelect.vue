@@ -33,8 +33,7 @@ export default {
       getAction("/school/schoolDownList", { parentId: id }).then(res => {
         this.selectList = res.data;
 
-          this.selectValue = this.campusId;
-
+        this.selectValue = this.campusId;
       });
     },
     selectChange(e) {

@@ -120,7 +120,12 @@ export default {
       classInfo({ id }).then(res => {
         this.form = Object.assign(this.form, res.data);
         this.$refs["school"].selectValue = res.data.schoolId;
-        this.optionsObj = [{educationStage:res.data.educationStage,schoolSystem:res.data.schoolSystem}]
+        this.optionsObj = [
+          {
+            educationStage: res.data.educationStage,
+            schoolSystem: res.data.schoolSystem
+          }
+        ];
       });
     },
     getSelectList(id) {
@@ -142,7 +147,7 @@ export default {
               this.dialogFormVisible = false;
               this.$message.success(res.msg);
               this.$emit("ok");
-            }else{
+            } else {
               this.$message.error(res.msg);
             }
           });
@@ -156,8 +161,8 @@ export default {
     "form.schoolId": {
       // immediate: true,
       handler(newVal) {
-        this.form.campusId = ''
-        this.optionsObj = [{}]
+        this.form.campusId = "";
+        this.optionsObj = [{}];
         newVal && this.getSelectList(newVal);
       }
     }

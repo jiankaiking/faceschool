@@ -10,7 +10,10 @@
         <schllo-select :schoolName.sync="searchData.schoolId" />
       </el-form-item>
       <el-form-item>
-        <campus-select :schoolName.sync="searchData.schoolId" :campusId.sync="searchData.campusId" />
+        <campus-select
+          :schoolName.sync="searchData.schoolId"
+          :campusId.sync="searchData.campusId"
+        />
       </el-form-item>
       <el-form-item>
         <el-input
@@ -39,8 +42,12 @@
         <el-table-column prop="studentCount" label="班级人数"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
-            <el-button type="text" @click="go(scope.row.id,scope.row.classNo)">详情</el-button>
+            <el-button type="text" @click="headEdit(scope.row.id)"
+              >编辑</el-button
+            >
+            <el-button type="text" @click="go(scope.row.id, scope.row.classNo)"
+              >详情</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -56,7 +63,7 @@
       >
       </el-pagination>
     </div>
-    <class-add-model ref="modelForm" @ok="loadData"/>
+    <class-add-model ref="modelForm" @ok="loadData" />
   </div>
 </template>
 
@@ -86,8 +93,8 @@ export default {
     };
   },
   methods: {
-    go(id,classNo){
-      this.$router.push(`/class/info?id=${id}&classNo=${classNo}`)
+    go(id, classNo) {
+      this.$router.push(`/class/info?id=${id}&classNo=${classNo}`);
     },
     inputChange(e) {
       this.searchData.classNo = e === "" ? null : e;

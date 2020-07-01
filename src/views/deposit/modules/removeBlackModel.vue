@@ -35,7 +35,9 @@
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取 消</el-button>
       <el-button type="primary" @click="ok('form')">确 定</el-button>
-      <div class="showBotext">备注:押金余额大于等于{{form.settingAmount}}元方可从黑名单移除</div>
+      <div class="showBotext">
+        备注:押金余额大于等于{{ form.settingAmount }}元方可从黑名单移除
+      </div>
     </div>
   </el-dialog>
 </template>
@@ -60,14 +62,12 @@ export default {
         payType: [
           { required: true, message: "请选择充值方式", trigger: "change" }
         ],
-        orderNo: [
-          { required: true, message: "请输入订单号", trigger: "blur" }
-        ]
+        orderNo: [{ required: true, message: "请输入订单号", trigger: "blur" }]
       },
       payData: {
         amount: "",
         payType: "",
-        orderNo:'',
+        orderNo: ""
       }
     };
   },

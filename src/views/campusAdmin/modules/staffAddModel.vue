@@ -99,7 +99,10 @@ export default {
         ],
         certificateNo: [
           { required: true, message: "请输入证件号", trigger: "blur" },
-          {pattern:/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/, message: '你的身份证格式不正确' }
+          {
+            pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/,
+            message: "你的身份证格式不正确"
+          }
         ],
         personNo: [
           { required: true, message: "请输入学籍号", trigger: "blur" }

@@ -77,7 +77,7 @@ export default {
     ok(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-            settingBlack(this.form).then(res => {
+          settingBlack(this.form).then(res => {
             if (res.code === 200) {
               this.dialogFormVisible = false;
               this.$message.success(res.msg);

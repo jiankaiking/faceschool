@@ -22,10 +22,12 @@
       <span class="line"></span>
       <el-button plain type="primary" @click="getSubChart">搜索</el-button>
       <el-button type="success" @click="changeType(0)">补贴金额</el-button>
-      <el-button plain type="success" @click="changeType(1)">补贴笔数</el-button>
+      <el-button plain type="success" @click="changeType(1)"
+        >补贴笔数</el-button
+      >
     </div>
     <div class="center-chart">
-      <div id="myChart" :style="{width: '100%', height: '400px'}"></div>
+      <div id="myChart" :style="{ width: '100%', height: '400px' }"></div>
     </div>
     <div class="info-header">
       <el-date-picker
@@ -77,7 +79,7 @@
 <script>
 import myMixins from "../../../config/mixins";
 import { downloadFile } from "../../../api/manage";
-import { subsidyInfoData ,subchart} from "../../../api/api";
+import { subsidyInfoData, subchart } from "../../../api/api";
 
 export default {
   name: "subsidyInfo",
@@ -88,16 +90,16 @@ export default {
         startTime: "",
         endTime: ""
       },
-      chartData:{
-        subsidyId:this.$route.query.subsidyId,
-        startTime:'',
-        endTime:'',
-        type:0
+      chartData: {
+        subsidyId: this.$route.query.subsidyId,
+        startTime: "",
+        endTime: "",
+        type: 0
       },
       chartTime: "",
       topInfo: {},
-      totalArr:[0],
-      mouthArr:[0],
+      totalArr: [0],
+      mouthArr: [0],
       tableTime: "",
       url: {
         list: `/manage/subsidy/data/list?subsidyId=${this.$route.query.subsidyId}`
@@ -106,22 +108,21 @@ export default {
   },
   mounted() {
     this.subsidyInfoData();
-    this.getSubChart()
+    this.getSubChart();
   },
   methods: {
-    getSubChart(){
-      subchart(this.chartData).then(res=>{
-        if(res.code == 200 && res.data.length > 0){
-          this.totalArr = res.data.map(i => i.total)
-          this.mouthArr = res.data.map(i => i.date)
-
+    getSubChart() {
+      subchart(this.chartData).then(res => {
+        if (res.code == 200 && res.data.length > 0) {
+          this.totalArr = res.data.map(i => i.total);
+          this.mouthArr = res.data.map(i => i.date);
         }
-        this.drawLine()
-      })
+        this.drawLine();
+      });
     },
-    changeType(e){
+    changeType(e) {
       this.chartData.type = e;
-      this.getSubChart()
+      this.getSubChart();
     },
     dowm() {
       let data = {
@@ -147,50 +148,49 @@ export default {
       myChart.setOption({
         animationDuration: 100,
         tooltip: {
-          trigger: 'axis',
+          trigger: "axis",
           axisPointer: {
-            type: 'cross',
+            type: "cross",
             label: {
-              backgroundColor: '#6a7985'
+              backgroundColor: "#6a7985"
             }
           }
         },
         grid: {
-          left: '2%',
-          right: '2%',
-          bottom: '5%',
+          left: "2%",
+          right: "2%",
+          bottom: "5%",
           containLabel: true
         },
         xAxis: [
           {
-            type: 'category',
+            type: "category",
             boundaryGap: false,
             data: this.mouthArr
           }
         ],
         yAxis: [
           {
-            type: 'value'
+            type: "value"
           }
         ],
         series: [
           {
-            name: this.chartData.type == 0?'补贴金额':'补贴笔数',
-            type: 'line',
-            stack: '总量',
-            itemStyle:{
-              color: '#3495FD'
+            name: this.chartData.type == 0 ? "补贴金额" : "补贴笔数",
+            type: "line",
+            stack: "总量",
+            itemStyle: {
+              color: "#3495FD"
             },
             areaStyle: {
-              color: '#3495FD'
+              color: "#3495FD"
             },
             data: this.totalArr
-          },
-
+          }
         ]
       });
     },
-    changeChartTime(e){
+    changeChartTime(e) {
       if (e == null) {
         this.chartTime = "";
         this.chartData.startTime = "";

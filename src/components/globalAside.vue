@@ -12,10 +12,10 @@
       text-color="hsla(0,0%,100%,.65)"
       active-text-color="#fff"
     >
-<!--      <el-menu-item index="/home">-->
-<!--        <i class="el-icon-menu"></i>-->
-<!--        <span slot="title">首页</span>-->
-<!--      </el-menu-item>-->
+      <!--      <el-menu-item index="/home">-->
+      <!--        <i class="el-icon-menu"></i>-->
+      <!--        <span slot="title">首页</span>-->
+      <!--      </el-menu-item>-->
       <el-submenu index="2">
         <template slot="title">
           <i class="el-icon-school"></i>
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+import { mapState } from "vuex";
 export default {
   name: "globalAside",
   data() {
@@ -67,15 +67,15 @@ export default {
       this.pIndex = indexPath[0];
     }
   },
-  computed:{
-    ...mapState(['menuIsfold']),
+  computed: {
+    ...mapState(["menuIsfold"]),
     activeMenu() {
-      const route = this.$route
-      const { meta, path } = route
+      const route = this.$route;
+      const { meta, path } = route;
       if (meta.activeMenu) {
-        return meta.activeMenu
+        return meta.activeMenu;
       }
-      return path
+      return path;
     }
   }
 };

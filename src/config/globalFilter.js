@@ -18,7 +18,7 @@ data.subsidyObject = [
   { code: "3", name: "学生" }
 ];
 //证件类型
- data.idCard = [
+data.idCard = [
   { code: "1", name: "居民身份证" },
   { code: "2", name: "港澳通行证 " },
   { code: "3", name: "台湾通行证" }
@@ -35,15 +35,15 @@ data.orderStatus = [
   { code: "2", name: "通道支付" },
   { code: "3", name: "保证金支付" },
   { code: "4", name: "已撤销" },
-  { code: "5", name: "已关闭" },
-]
+  { code: "5", name: "已关闭" }
+];
 
 //押金类型
 data.sceneType = [
   { code: "1", name: "预存" },
   { code: "2", name: "抵扣" },
-  { code: "3", name: "退款回冲" },
-]
+  { code: "3", name: "退款回冲" }
+];
 
 export function getOrderStatus(val) {
   for (let i = 0; i < data.orderStatus.length; i++) {
@@ -70,7 +70,7 @@ export function getFaceStatus(val) {
 }
 
 export function getTimeFilter(val) {
-  return /\d{4}-\d{1,2}-\d{1,2}/g.exec(val)[0]
+  return /\d{4}-\d{1,2}-\d{1,2}/g.exec(val)[0];
 }
 
 export function getIdCard(val) {
@@ -105,6 +105,5 @@ export function getSubsidyObject(val) {
   }
 }
 export function getIdCardArr() {
-    return data.idCard
+  return data.idCard;
 }
-

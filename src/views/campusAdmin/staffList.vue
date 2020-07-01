@@ -53,15 +53,19 @@
         <el-table-column prop="campusName" label="校区"></el-table-column>
         <el-table-column prop="certificateType" label="证件类型">
           <template slot-scope="scope">
-            {{scope.row.certificateType | getIdCard}}
+            {{ scope.row.certificateType | getIdCard }}
           </template>
         </el-table-column>
-        <el-table-column width="250" prop="certificateNo" label="证件号"></el-table-column>
+        <el-table-column
+          width="250"
+          prop="certificateNo"
+          label="证件号"
+        ></el-table-column>
         <el-table-column prop="personNo" label="教师编号"></el-table-column>
         <el-table-column prop="phone" label="联系电话"></el-table-column>
         <el-table-column prop="faceVerification" label="人脸核验">
           <template slot-scope="scope">
-            {{scope.row.faceVerification | getFaceStatus}}
+            {{ scope.row.faceVerification | getFaceStatus }}
           </template>
         </el-table-column>
         <el-table-column prop="status" label="账号状态">
@@ -78,7 +82,9 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="headEdit(scope.row.id)">编辑</el-button>
+            <el-button type="text" @click="headEdit(scope.row.id)"
+              >编辑</el-button
+            >
             <el-popover
               width="160"
               :ref="`popover-${scope.row.id}`"
@@ -160,10 +166,10 @@ export default {
   methods: {
     upSuccess(e) {
       if (e.code === 200) {
-        this.$message.warning(`成功${e.data.success}条,失败${e.data.fail}条`)
+        this.$message.warning(`成功${e.data.success}条,失败${e.data.fail}条`);
         this.loadData();
-      }else{
-        this.$message.error(e.msg)
+      } else {
+        this.$message.error(e.msg);
       }
     },
     deleteStaff(id) {

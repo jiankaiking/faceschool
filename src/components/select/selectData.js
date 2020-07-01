@@ -25,7 +25,7 @@ const subsidyStatus = [
   { code: "", value: "全部" },
   { code: "0", value: "未生效" },
   { code: "1", value: "生效中" },
-  { code: "2", value: "已过期" },
+  { code: "2", value: "已过期" }
 ];
 
 const orderStatus = [
@@ -34,15 +34,15 @@ const orderStatus = [
   { code: "2", value: "通道支付" },
   { code: "3", value: "保证金支付" },
   { code: "4", value: "已撤销" },
-  { code: "5", value: "已关闭" },
-]
+  { code: "5", value: "已关闭" }
+];
 
 const payType = [
   { code: "1", value: "支付宝" },
   { code: "2", value: "微信" },
   { code: "3", value: "现金" },
-  { code: "4", value: "刷卡" },
-]
+  { code: "4", value: "刷卡" }
+];
 
 export default {
   payType,

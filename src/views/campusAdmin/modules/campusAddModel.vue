@@ -10,15 +10,18 @@
       <el-form-item label="学校" prop="parentId" v-if="!form.id">
         <schllo-select ref="school" :schoolName.sync="form.parentId" />
       </el-form-item>
-      <el-form-item label="学校" prop="parentId"  v-if="form.id">
-        <schllo-select ref="school" :schoolName.sync="form.parentId == 0?form.id:form.parentId" />
+      <el-form-item label="学校" prop="parentId" v-if="form.id">
+        <schllo-select
+          ref="school"
+          :schoolName.sync="form.parentId == 0 ? form.id : form.parentId"
+        />
       </el-form-item>
       <el-form-item label="校区" prop="campusName">
         <el-input v-model="form.campusName" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="地址" prop="regionLongCode">
-        <el-input v-model="form.area" @focus="clickCity"  v-if="cityShow" />
-        <citySelect @selectCode="getCity"  v-if="!cityShow"></citySelect>
+        <el-input v-model="form.area" @focus="clickCity" v-if="cityShow" />
+        <citySelect @selectCode="getCity" v-if="!cityShow"></citySelect>
       </el-form-item>
       <el-form-item prop="address">
         <el-input placeholder="请输入详细地址" v-model="form.address" />
@@ -71,7 +74,7 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      cityShow:false,
+      cityShow: false,
       rules: {
         parentId: [
           { required: true, message: "请选择学校名称", trigger: "change" }
@@ -102,7 +105,7 @@ export default {
         ]
       },
       form: {
-        parentId:'',
+        parentId: "",
         campusName: "",
         regionLongCode: "",
         address: "",
@@ -115,7 +118,7 @@ export default {
     };
   },
   methods: {
-    clickCity(){
+    clickCity() {
       this.cityShow = false;
     },
     add() {
@@ -157,7 +160,7 @@ export default {
         }
       });
     }
-  },
+  }
 };
 </script>
 

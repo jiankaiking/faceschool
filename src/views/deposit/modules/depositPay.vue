@@ -59,9 +59,7 @@ export default {
         source: [
           { required: true, message: "请选择充值方式", trigger: "change" }
         ],
-        orderNo: [
-          { required: true, message: "请输入订单号", trigger: "blur" }
-        ]
+        orderNo: [{ required: true, message: "请输入订单号", trigger: "blur" }]
       },
       payData: {
         amount: "",

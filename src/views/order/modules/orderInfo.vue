@@ -13,15 +13,15 @@
       <span>优惠金额:{{ orderInfo.discountsAmount }}</span>
     </div>
     <div class="info-title">客户详情</div>
-      <div class="info-messages">
-          <span>姓名:{{ orderInfo.name }}</span>
-          <span>学籍编号/教师编号:{{ orderInfo.personNo }}</span>
-      </div>
-      <div class="info-title">退款详情</div>
-      <div class="info-messages">
-          <span>退款金额:{{ orderInfo.refundAmount }}</span>
-          <span>退款时间:{{ orderInfo.refundTime }}</span>
-      </div>
+    <div class="info-messages">
+      <span>姓名:{{ orderInfo.name }}</span>
+      <span>学籍编号/教师编号:{{ orderInfo.personNo }}</span>
+    </div>
+    <div class="info-title">退款详情</div>
+    <div class="info-messages">
+      <span>退款金额:{{ orderInfo.refundAmount }}</span>
+      <span>退款时间:{{ orderInfo.refundTime }}</span>
+    </div>
   </el-dialog>
 </template>
 
@@ -40,7 +40,7 @@ export default {
   methods: {
     edit(id) {
       this.dialogFormVisible = true;
-        orderInfo({orderId:id}).then(res => {
+      orderInfo({ orderId: id }).then(res => {
         if (res.code === 200) {
           this.orderInfo = res.data;
         }

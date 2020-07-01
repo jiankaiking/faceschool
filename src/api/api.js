@@ -51,8 +51,8 @@ export const addSubsidy = params => postAction("/subsidy/saveSubsidy", params);
 export const subsidyInfo = params => getAction("/subsidy/info", params);
 
 //补贴金编辑
-export const updateSubsidy = params => postAction("/subsidy/updateSubsidy", params);
-
+export const updateSubsidy = params =>
+  postAction("/subsidy/updateSubsidy", params);
 
 //删除补贴金
 export const delSubsidy = params => getAction("/subsidy/delSubsidy", params);
@@ -81,9 +81,9 @@ export const rechargePay = params => postAction("/deposit/recharge", params);
 export const subchart = params =>
   getAction("/manage/subsidy/data/bar/chart", params);
 
-
 //移除黑名单
-export const settingList = params => getAction("/school/black/setting/list", params);
+export const settingList = params =>
+  getAction("/school/black/setting/list", params);
 
 //移除黑名单
 export const removeblack = params => getAction("/remove/black", params);

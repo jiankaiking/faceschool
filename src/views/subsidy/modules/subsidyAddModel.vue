@@ -20,10 +20,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8" :offset="1">
-          <el-form-item
-            label="补贴时间"
-            prop="endTime"
-          >
+          <el-form-item label="补贴时间" prop="endTime">
             <el-date-picker
               v-model="startEndTime"
               @input="testClick"
@@ -288,16 +285,14 @@ export default {
         startEndTime: [
           { required: true, message: "请输入补贴名称", target: "blur" }
         ],
-        fullMoney: [
-          { required: true, validator: intNum, target: "blur" }
-        ],
+        fullMoney: [{ required: true, validator: intNum, target: "blur" }],
         subsidyAmount: [
           { required: true, validator: maxMoney, target: "blur" }
         ],
         subsidyProportion: [
           { required: true, validator: maxSubsidyProportion, target: "blur" }
         ],
-        endTime:[{ required: true, message: "请选择时间", target: "blur" }],
+        endTime: [{ required: true, message: "请选择时间", target: "blur" }],
         subsidyUpper: {},
         subsidyTime: {}
       },
