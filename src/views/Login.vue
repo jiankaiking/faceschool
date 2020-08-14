@@ -24,7 +24,7 @@
             style="width: 100%"
             type="primary"
             @click="submitForm('ruleForm')"
-            >立即创建</el-button
+            >登录</el-button
           >
         </el-form-item>
       </el-form>

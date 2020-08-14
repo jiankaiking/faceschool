@@ -185,6 +185,7 @@ export default {
     upSuccess(e) {
       if (e.code === 200) {
         this.$message.success("导入成功");
+        this.loadData();
       } else {
         this.$message.error("导入失败");
       }

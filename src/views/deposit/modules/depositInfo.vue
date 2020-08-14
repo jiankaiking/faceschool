@@ -31,6 +31,7 @@
         </el-table-column>
         <el-table-column prop="source" label="来源"></el-table-column>
         <el-table-column prop="amount" label="金额"></el-table-column>
+        <el-table-column prop="currentAmount" label="当前余额"></el-table-column>
       </el-table>
     </div>
     <!--    <div slot="footer" class="dialog-footer">-->

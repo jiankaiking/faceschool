@@ -111,6 +111,7 @@ export default {
   },
   methods: {
     deleteStaff(id) {
+      this.$refs[`popover-${id}`].doClose();
       deletePerson({ id }).then(res => {
         if (res.code === 200) {
           this.loadData();

@@ -81,7 +81,7 @@
 
 <script>
 import schlloSelect from "../../../components/select/schlloSelect";
-
+// import testSelect from "../test/testSelect";
 // import campusSelect from "../../../components/select/campusSelect";
 import {
   editStudent,
@@ -212,7 +212,7 @@ export default {
       });
     },
     getClass(id) {
-      console.log(123);
+      // console.log(123);
       classDown({ campusId: id }).then(res => {
         if (res.code === 200) {
           this.classArr = res.data;

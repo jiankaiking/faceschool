@@ -37,6 +37,8 @@
           ref="upload"
           :headers="headers"
           :on-success="upSuccess"
+          :on-progress="onProgress"
+          :on-error="onError"
           accept=".xlsx"
           :action="url.exportUrl"
           :with-credentials="true"
@@ -47,7 +49,12 @@
       </el-form-item>
     </el-form>
     <div class="table-box">
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table
+        :data="tableData"
+        v-loading="loading"
+        border
+        style="width: 100%"
+      >
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="schoolName" label="学校"></el-table-column>
         <el-table-column prop="campusName" label="校区"></el-table-column>
@@ -164,7 +171,14 @@ export default {
     };
   },
   methods: {
+    onError() {
+      this.loading = false;
+    },
+    onProgress() {
+      this.loading = true;
+    },
     upSuccess(e) {
+      this.loading = false;
       if (e.code === 200) {
         this.$message.warning(`成功${e.data.success}条,失败${e.data.fail}条`);
         this.loadData();
@@ -183,14 +197,27 @@ export default {
     downFile() {
       downloadFile("/person/teacherTemplate", "教职工信息表.xlsx");
     },
-    changeStatus(row) {
-      changeStatus({ id: row.id, status: row.status == 0 ? 1 : 0 }).then(
-        res => {
-          if (res.code === 200) {
-            this.loadData();
-          }
+    statusChange(id, status) {
+      changeStatus({ id, status }).then(res => {
+        if (res.code === 200) {
+          this.loadData();
         }
-      );
+      });
+    },
+    changeStatus(row) {
+      row.status == 1
+        ? this.$confirm("账号关闭之后需要重新签约，是否确定关闭?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              this.statusChange(row.id, row.status == 0 ? 1 : 0);
+            })
+            .catch(()=> {
+
+            })
+        : this.statusChange(row.id, row.status == 0 ? 1 : 0);
     }
   }
 };

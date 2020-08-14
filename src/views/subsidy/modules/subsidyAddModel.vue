@@ -257,6 +257,8 @@ export default {
         return callback(new Error("请输入正确的数值"));
       } else if (!value) {
         return callback(new Error("请输入补贴比例"));
+      }else if(value >= 100){
+        return callback(new Error("补贴比例不能大于100%"));
       } else {
         callback();
       }
