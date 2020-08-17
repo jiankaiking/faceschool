@@ -74,7 +74,13 @@ const routes = [
         path: "/blacklist",
         name: "blackList",
         component: () => import("../views/deposit/blackList.vue")
-      }
+      },
+      // 设备列表 devicelist
+      {
+        path: "/devicelist",
+        name: "devicelist",
+        component: () => import("../views/device/deviceList.vue")
+      },
     ]
   },
   {

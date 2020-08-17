@@ -91,3 +91,7 @@ export const removeblack = params => getAction("/remove/black", params);
 //设置黑名单金额
 export const settingBlack = params =>
   getAction("/setting/black/amount", params);
+
+//设备注册
+export const addDeviceSn = params => postAction("/class/edit", params);
+

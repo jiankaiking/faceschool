@@ -49,6 +49,13 @@
         <el-menu-item index="/depositlist">押金列表</el-menu-item>
         <el-menu-item index="/blacklist">黑名单管理</el-menu-item>
       </el-submenu>
+      <el-submenu index="6">
+        <template slot="title">
+          <i class="el-icon-set-up"></i>
+          <span>设备管理</span>
+        </template>
+        <el-menu-item index="/devicelist">设备信息</el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

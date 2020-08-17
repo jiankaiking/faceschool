@@ -6,9 +6,12 @@
     width="30%"
     :visible.sync="dialogFormVisible"
   >
-    <el-form :model="form" ref="form" :rules="rules" label-width="100px">
+    <el-form :model="form" ref="form" :rules="rules" label-width="120px">
       <el-form-item label="学校" prop="schoolName">
         <el-input v-model="form.schoolName" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="组织机构代码" prop="school_stdcode">
+        <el-input v-model="form.school_stdcode" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="地址" prop="regionLongCode">
         <el-input v-model="form.area" @focus="clickCity" v-if="cityShow" />
@@ -67,6 +70,9 @@ export default {
       rules: {
         schoolName: [
           { required: true, message: "请输入学校名称", trigger: "blur" }
+        ],
+        school_stdcode: [
+          { required: true, message: "请输入组织机构代码", trigger: "blur" }
         ],
         regionLongCode: [
           { required: true, message: "请选择地址", trigger: "change" }
