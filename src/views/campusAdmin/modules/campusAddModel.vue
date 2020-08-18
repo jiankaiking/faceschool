@@ -20,8 +20,10 @@
         <el-input v-model="form.campusName" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="地址" prop="regionLongCode">
-        <el-input v-model="form.area" @focus="clickCity" v-if="cityShow" />
-        <citySelect @selectCode="getCity" v-if="!cityShow"></citySelect>
+        <citySelect
+          @selectCode="getCity"
+          :city-code="form.regionLongCode"
+        ></citySelect>
       </el-form-item>
       <el-form-item prop="address">
         <el-input placeholder="请输入详细地址" v-model="form.address" />
@@ -74,7 +76,7 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      cityShow: false,
+
       rules: {
         parentId: [
           { required: true, message: "请选择学校名称", trigger: "change" }
@@ -118,21 +120,16 @@ export default {
     };
   },
   methods: {
-    clickCity() {
-      this.cityShow = false;
-    },
     add() {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
-      this.cityShow = false;
       this.dialogFormVisible = true;
     },
     edit(id) {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
-      this.cityShow = true;
       this.dialogFormVisible = true;
       getSchoolInfo({ id }).then(res => {
         if (res.code === 200) {

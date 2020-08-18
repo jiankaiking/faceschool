@@ -14,7 +14,7 @@
       label-width="100px"
     >
       <el-form-item label="学校" prop="schoolId">
-        <schllo-select ref="school" :schoolName.sync="form.schoolId" />
+        <schllo-select ref="school" :schoolName.sync="form.schoolId" @changeSchool="changeSchool" />
       </el-form-item>
       <el-form-item label="校区" prop="campusId">
         <el-select
@@ -118,6 +118,7 @@ export default {
     edit(id) {
       this.dialogFormVisible = true;
       classInfo({ id }).then(res => {
+        this.getSelectList(res.data.schoolId)
         this.form = Object.assign(this.form, res.data);
         this.$refs["school"].selectValue = res.data.schoolId;
         this.optionsObj = [
@@ -128,6 +129,11 @@ export default {
         ];
       });
     },
+    changeSchool(e){
+      this.optionsObj = [{}]
+      this.form.campusId = ''
+      this.getSelectList(e)
+    },
     getSelectList(id) {
       getSchoolDownList({ parentId: id }).then(res => {
         this.selectList = res.data;
@@ -137,7 +143,6 @@ export default {
       this.optionsObj = this.selectList.filter(item => {
         return item.id == e;
       });
-      console.log(this.optionsObj);
     },
     ok(formName) {
       this.$refs[formName].validate(valid => {
@@ -157,16 +162,6 @@ export default {
       });
     }
   },
-  watch: {
-    "form.schoolId": {
-      // immediate: true,
-      handler(newVal) {
-        this.form.campusId = "";
-        this.optionsObj = [{}];
-        newVal && this.getSelectList(newVal);
-      }
-    }
-  }
 };
 </script>
 

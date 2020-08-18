@@ -6,28 +6,22 @@
     width="30%"
     :visible.sync="dialogFormVisible"
   >
-    <el-form label-position="left" :model="form" ref="form" :rules="rules" label-width="100px">
-      <!-- <el-form-item label="组织机构代码" prop="school_stdcode">
-        <el-input  v-model="form.school_stdcode" placeholder="组织机构代码" />
-      </el-form-item> -->
-       <el-form-item label="设备SN" prop="device_sn">
-        <el-input v-model="form.device_sn" placeholder="请输入设备SN" :readonly="true"></el-input>
+    <el-form
+      label-position="left"
+      :model="form"
+      ref="form"
+      :rules="rules"
+      label-width="100px"
+    >
+      <el-form-item label="设备SN" prop="deviceId">
+        <el-input
+          v-model="form.deviceId"
+          placeholder="请输入设备SN"
+          :readonly="true"
+        ></el-input>
       </el-form-item>
-      <!-- <el-form-item label="绑定关系类型" prop="type">
-        <el-select v-model="form.type" placeholder="绑定关系类型" @change="changeType">
-          <el-option
-            v-for="(item, index) in typeList"
-            :key="index"
-            :value="item.value"
-            :label="item.label"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="绑定关系id" prop="id">
-        <el-input v-model="form.id" placeholder="请输入绑定关系id" :readonly="pIdReady"></el-input>
-      </el-form-item> -->
-      <el-form-item label="学校" prop="schoolId">
-        <schllo-select ref="school" :schoolName.sync="form.schoolId" />
+      <el-form-item label="学校" prop="shoolId">
+        <schllo-select ref="school" :schoolName.sync="form.shoolId" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -38,7 +32,7 @@
 </template>
 
 <script>
-import { schoolSupplement } from "../../../api/api";
+import { deviceBind } from "../../../api/api";
 import schlloSelect from "../../../components/select/schlloSelect";
 export default {
   name: "bindModels",
@@ -50,9 +44,8 @@ export default {
       dialogFormVisible: false,
       pIdReady: false,
       form: {
-
-        device_sn: "",
-        schoolId: ""
+        deviceId: "",
+        shoolId: ""
       },
       typeList: [
         { value: "COMMON_ISV", label: "ISV" },
@@ -68,29 +61,30 @@ export default {
         { value: "SEPERATE_MERCHANT", label: "间联商户" }
       ],
       rules: {
-     
-        device_sn: [
+        deviceId: [
           { required: true, message: "请输入设备SN", trigger: "change" }
         ],
-        schoolId: [{ required: true, message: "请选择学校", trigger: "change" }]
+        shoolId: [{ required: true, message: "请选择学校", trigger: "change" }]
       }
     };
   },
   methods: {
-    add(device_sn) {
+    add(deviceNo) {
       Object.keys(this.form).forEach(key => (this.form[key] = ""));
-      this.form.device_sn = device_sn;
+      this.form.deviceId = deviceNo;
       this.dialogFormVisible = true;
     },
 
     ok(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // 设备绑定
-          schoolSupplement(this.form).then(res => {
+          deviceBind(this.form).then(res => {
             if (res.code === 200) {
               this.dialogFormVisible = false;
+              this.$emit("ok");
               this.$message.success(res.msg);
+            }else{
+              this.$message.error(res.msg);
             }
           });
         } else {
@@ -99,15 +93,15 @@ export default {
       });
     },
 
-    changeType(e){
-      if(e == 'COMMON_ISV'){
-        this.form.id = '2088431997685080'
-        this.pIdReady = true
-      }else{
-        this.form.id = ''
-        this.pIdReady = false
-      }
-    },
+    // changeType(e) {
+    //   if (e == "COMMON_ISV") {
+    //     this.form.id = "2088431997685080";
+    //     this.pIdReady = true;
+    //   } else {
+    //     this.form.id = "";
+    //     this.pIdReady = false;
+    //   }
+    // }
   }
 };
 </script>

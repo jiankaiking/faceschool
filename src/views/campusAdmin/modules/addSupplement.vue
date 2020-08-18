@@ -22,11 +22,11 @@
       <el-form-item label="token" prop="token">
         <el-input v-model="form.token" placeholder="请输入token"></el-input>
       </el-form-item>
-      <el-form-item label="门店ID" prop="shopId">
-        <el-input v-model="form.shopId" placeholder="请输入门店ID"></el-input>
+      <el-form-item label="门店ID" prop="storeNo">
+        <el-input v-model="form.storeNo" placeholder="请输入门店ID"></el-input>
       </el-form-item>
-      <el-form-item label="门店名称" prop="shopName">
-        <el-input v-model="form.shopName" placeholder="请输入门店名称"></el-input>
+      <el-form-item label="门店名称" prop="storeName">
+        <el-input v-model="form.storeName" placeholder="请输入门店名称"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { schoolSupplement } from "../../../api/api";
+import { schoolSupplement ,supplementInfo} from "../../../api/api";
 export default {
   name: "campisAddModel",
   data() {
@@ -47,24 +47,25 @@ export default {
         merchantNo: "",
         id: "",
         token: "",
-        shopId: "",
-        shopName: ""
+        storeNo: "",
+        storeName: ""
       },
       rules: {
         merchantNo: [
           { required: true, message: "请输入商户号", trigger: "blur" }
         ],
         token: [{ required: true, message: "请输入token", trigger: "blur" }],
-        shopId: [{ required: true, message: "请输入门店ID", trigger: "blur" }],
-        shopName: [{ required: true, message: "请输入门店名称", trigger: "blur" }],
+        storeNo: [{ required: true, message: "请输入门店ID", trigger: "blur" }],
+        storeName: [{ required: true, message: "请输入门店名称", trigger: "blur" }],
 
       }
     };
   },
   methods: {
     add(id) {
-      Object.keys(this.form).forEach(key => (this.form[key] = ""));
-      this.form.id = id;
+      supplementInfo({schoolId:id}).then(res=>{
+        Object.assign(this.form,res.data)
+      })
       this.dialogFormVisible = true;
     },
 

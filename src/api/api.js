@@ -14,6 +14,9 @@ export const getSchoolInfo = params => getAction("/school/info", params);
 export const schoolSupplement = params =>
   postAction("/school/supplement", params);
 
+//学校补参
+export const supplementInfo = params => getAction("/school/paramInfo", params);
+
 //班级新增修改
 export const addClass = params => postAction("/class/edit", params);
 
@@ -92,6 +95,20 @@ export const removeblack = params => getAction("/remove/black", params);
 export const settingBlack = params =>
   getAction("/setting/black/amount", params);
 
-//设备注册
-export const addDeviceSn = params => postAction("/class/edit", params);
+//设备激活
+export const deviceInitialize = params =>
+  postAction("/manage/device/initialize", params);
 
+//设备绑定
+export const deviceBind = params => postAction("/manage/device/bind", params);
+
+//设备解绑
+export const deviceUnbind = params =>
+  postAction("/manage/device/unbind", params);
+
+export const againInitialize = params =>
+  postAction("/manage/device/again/initialize", params);
+
+//查询设备信息
+export const getDeviceInfo = params =>
+  postAction("/manage/device/getDeviceInfo", params);

@@ -35,12 +35,13 @@ export default {
       getAction("/school/schoolDownList").then(res => {
         this.selectList = res.data;
         this.selectValue = this.schoolName;
-        console.log(this.selectValue);
+        // console.log(this.selectValue);
       });
     },
     selectChange(e) {
-      console.log(e);
+      // console.log(e);
       this.$emit("update:schoolName", e);
+      this.$emit('changeSchool',e)
     }
   },
   watch: {

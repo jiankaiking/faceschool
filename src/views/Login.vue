@@ -86,7 +86,7 @@ export default {
 }
 
 .login-bg {
-  background: url("http://chuantu.xyz/t6/739/1593570505x-1404755695.jpg") 50%
+  background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597722812884&di=c0271049ef25ec7bbf6f5ce75976d846&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fblog%2F201308%2F05%2F20130805105309_5E2zE.jpeg") 50%
     50% / cover;
   height: 100%;
   position: relative;

@@ -46,8 +46,11 @@ export default {
         return "region";
       }
     },
-    echoData: {
-      type: Array
+    cityCode: {
+      type: String,
+      default() {
+        return "";
+      }
     }
   },
   data() {
@@ -55,21 +58,39 @@ export default {
       provinceArr: [],
       province: {},
       city: {},
+      code: this.cityCode,
       region: {},
       cityArr: [],
       regionArr: [],
-      rId: 1 // 查询id
+      rId: 0  // 查询id
     };
   },
-  mounted() {
-    getCityCode().then(res => {
-      this.provinceArr = res.data;
-      this.province = "";
-      this.city = "";
-      this.region = "";
-    });
-  },
   methods: {
+    showCode() {
+      this.province = this.code.substring(0, 2);
+      this.city = this.code.substring(0, 4);
+      this.region = this.code;
+      getCityCode({ regionLongCode: this.rId })
+        .then(res => {
+          this.provinceArr = res.data;
+          return getCityCode({ regionLongCode: this.province });
+        })
+        .then(res => {
+          this.cityArr = res.data;
+          return getCityCode({ regionLongCode: this.city });
+        })
+        .then(res => {
+          this.regionArr = res.data;
+        });
+    },
+    initial() {
+      getCityCode({ regionLongCode: this.rId }).then(res => {
+        this.provinceArr = res.data;
+        this.province = "";
+        this.city = "";
+        this.region = "";
+      });
+    },
     provinceSelect(e) {
       getCityCode({ regionLongCode: e }).then(res => {
         this.cityArr = res.data;
@@ -90,6 +111,16 @@ export default {
     selectCode(e) {
       this.$emit("selectCode", e);
     }
+  },
+  watch: {
+    cityCode: {
+      immediate: true,
+      handler(val) {
+        // console.log(val)
+        this.code = val
+        val.length === 7?this.showCode(): this.initial()
+      }
+    },
   }
 };
 </script>

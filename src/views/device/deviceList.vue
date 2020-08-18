@@ -7,12 +7,8 @@
       :model="searchData"
     >
       <el-form-item label="设备SN:">
-        <el-input
-          v-model="searchData.device_sn"
-          @change="inputChange"
-          placeholder="设备SN"
-        ></el-input>
-      </el-form-item> 
+        <el-input v-model="searchData.deviceNo" placeholder="设备SN"></el-input>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="searchLick">查询</el-button>
         <el-button type="primary" @click="headAdd">注册</el-button>
@@ -20,31 +16,48 @@
     </el-form>
     <div class="table-box">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="biz_tid" label="设备id"></el-table-column>
-        <el-table-column prop="biz_type" label="设备使用业务场景"></el-table-column>
-        <el-table-column prop="merchant_pid" label="所属学校"></el-table-column>
-        <el-table-column prop="shop_id" label="所属门店"></el-table-column>
-        <el-table-column prop="isv_pid" label="所属ISV"></el-table-column>
-        <el-table-column prop="status" label="机具状态">
+        <el-table-column prop="deviceNo" label="设备SN"></el-table-column>
+        <el-table-column
+          prop="deviceRange"
+          label="设备使用业务场景"
+        ></el-table-column>
+        <el-table-column prop="schoolName" label="所属学校"></el-table-column>
+        <el-table-column prop="storeName" label="所属门店"></el-table-column>
+        <el-table-column prop="aliIsvName" label="所属ISV"></el-table-column>
+        <el-table-column prop="deviceStatus" label="机具状态">
           <template slot-scope="scope">
-            {{scope.row.status=='UNREGISTER'?'未注册':scope.row.status=='ACTIVED'?'已激活':scope.row.status=='UNACTIVED'?'未激活':'--'}}
+            {{ scope.row.deviceStatus | getDeviceStatus }}
           </template>
         </el-table-column>
-         <el-table-column
-          prop="bind_status"
-          label="机具绑定状态"
-        >
-        <template slot-scope="scope">
-            {{scope.row.bind_status=='BIND'?'已绑定':scope.row.bind_status=='UNBIND'?'未绑定':'--'}}
+        <el-table-column prop="bindStatus" label="机具绑定状态">
+          <template slot-scope="scope">
+            {{ scope.row.bindStatus == "0" ? "已绑定" : "未绑定" }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="headAdd" v-if="scope.row.status=='UNREGISTER'">注册</el-button>
-            <!-- <el-button type="text" @click="go(scope.row.id, scope.row.classNo)" v-if="scope.row.bind_status=='UNBIND'">绑定</el-button> -->
-            <el-button type="text" @click="toBindModel(scope.row.id)">绑定</el-button>
-
-            <el-button type="text" v-if="scope.row.bind_status=='BIND'">解绑</el-button>
+            <el-button
+              type="text"
+              @click="againAdd(scope.row)"
+              v-if="scope.row.deviceStatus != '2'"
+              >注册</el-button
+            >
+            <el-button
+              type="text"
+              @click="toBindModel(scope.row.id)"
+              v-if="
+                scope.row.deviceStatus == '2' && scope.row.bindStatus == '0'
+              "
+              >绑定</el-button
+            >
+            <el-button
+              type="text"
+              @click="unbind(scope.row.id)"
+              v-if="
+                scope.row.deviceStatus == '2' && scope.row.bindStatus == '1'
+              "
+              >解绑</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -60,13 +73,14 @@
       >
       </el-pagination>
     </div>
-    <device-add-model ref="modelForm" @ok="loadData" />
-    <bind-model ref="bindModel"/>
+    <device-add-model ref="modelForm" @ok="addOk" />
+    <bind-model ref="bindModel" @ok="loadData" />
   </div>
 </template>
 
 <script>
 import deviceAddModel from "./modules/deviceAddModel";
+import { deviceUnbind } from "../../api/api";
 import bindModel from "./modules/bindModel";
 import myMixins from "../../config/mixins";
 export default {
@@ -79,23 +93,31 @@ export default {
   data() {
     return {
       searchData: {
-        classNo: null,
-        schoolId: "",
-        campusId: ""
+        deviceNo: ""
       },
       url: {
-        list: "/class/list"
+        list: "/manage/device/selectDeviceList"
       }
     };
   },
   methods: {
-    toBindModel(device_sn) {
-      this.$refs["bindModel"].add(device_sn);
+    toBindModel(deviceNo) {
+      this.$refs["bindModel"].add(deviceNo);
     },
 
-   
-    inputChange(e) {
-      this.searchData.device_sn = e === "" ? null : e;
+    unbind(deviceId) {
+      deviceUnbind({ deviceId }).then(res => {
+        if (res.code === 200) {
+          this.loadData();
+        }
+      });
+    },
+    againAdd(row) {
+      this.$refs["modelForm"].register(row);
+    },
+    addOk(deviceId) {
+      this.loadData();
+      this.toBindModel(deviceId);
     }
   }
 };

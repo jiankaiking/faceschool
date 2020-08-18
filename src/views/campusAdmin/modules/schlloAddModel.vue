@@ -10,12 +10,11 @@
       <el-form-item label="学校" prop="schoolName">
         <el-input v-model="form.schoolName" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="组织机构代码" prop="school_stdcode">
-        <el-input v-model="form.school_stdcode" autocomplete="off"></el-input>
+      <el-form-item label="组织机构代码" prop="schoolStdcode">
+        <el-input v-model="form.schoolStdcode" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="地址" prop="regionLongCode">
-        <el-input v-model="form.area" @focus="clickCity" v-if="cityShow" />
-        <citySelect @selectCode="getCity" v-if="!cityShow"></citySelect>
+        <citySelect @selectCode="getCity" :city-code="form.regionLongCode"></citySelect>
       </el-form-item>
       <el-form-item prop="address">
         <el-input placeholder="请输入详细地址" v-model="form.address" />
@@ -65,13 +64,12 @@ export default {
   },
   data() {
     return {
-      cityShow: false,
       dialogFormVisible: false,
       rules: {
         schoolName: [
           { required: true, message: "请输入学校名称", trigger: "blur" }
         ],
-        school_stdcode: [
+        schoolStdcode: [
           { required: true, message: "请输入组织机构代码", trigger: "blur" }
         ],
         regionLongCode: [
@@ -97,6 +95,7 @@ export default {
         ]
       },
       form: {
+        schoolStdcode:'',
         schoolName: "",
         regionLongCode: "",
         address: "",
@@ -109,19 +108,14 @@ export default {
     };
   },
   methods: {
-    clickCity() {
-      this.cityShow = false;
-    },
     add() {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
-      this.cityShow = false;
       this.dialogFormVisible = true;
     },
     edit(id) {
       this.dialogFormVisible = true;
-      this.cityShow = true;
       getSchoolInfo({ id }).then(res => {
         if (res.code === 200) {
           this.form = res.data;

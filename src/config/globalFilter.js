@@ -45,6 +45,23 @@ data.sceneType = [
   { code: "3", name: "退款回冲" }
 ];
 
+//机具状态
+
+data.deviceStatus = [
+  { code: "1", name: "未注册" },
+  { code: "2", name: "已激活" },
+  { code: "3", name: "未激活" }
+]
+
+
+export function getDeviceStatus(val) {
+  for (let i = 0; i < data.deviceStatus.length; i++) {
+    if (val === data.deviceStatus[i].code) {
+      return data.deviceStatus[i].name;
+    }
+  }
+}
+
 export function getOrderStatus(val) {
   for (let i = 0; i < data.orderStatus.length; i++) {
     if (val === data.orderStatus[i].code) {
