@@ -13,9 +13,9 @@
       :rules="rules"
       label-width="100px"
     >
-      <el-form-item label="设备SN" prop="deviceId">
+      <el-form-item label="设备SN" prop="deviceNo">
         <el-input
-          v-model="form.deviceId"
+          v-model="form.deviceNo"
           placeholder="请输入设备SN"
           :readonly="true"
         ></el-input>
@@ -44,7 +44,7 @@ export default {
       dialogFormVisible: false,
       pIdReady: false,
       form: {
-        deviceId: "",
+        deviceNo: "",
         shoolId: ""
       },
       typeList: [
@@ -61,7 +61,7 @@ export default {
         { value: "SEPERATE_MERCHANT", label: "间联商户" }
       ],
       rules: {
-        deviceId: [
+        deviceNo: [
           { required: true, message: "请输入设备SN", trigger: "change" }
         ],
         shoolId: [{ required: true, message: "请选择学校", trigger: "change" }]
@@ -69,9 +69,11 @@ export default {
     };
   },
   methods: {
-    add(deviceNo) {
+    add(device) {
+      // console.log(device)
       Object.keys(this.form).forEach(key => (this.form[key] = ""));
-      this.form.deviceId = deviceNo;
+      this.form.deviceId = device.deviceId;
+      this.form.deviceNo = device.deviceNo;
       this.dialogFormVisible = true;
     },
 
@@ -82,9 +84,9 @@ export default {
             if (res.code === 200) {
               this.dialogFormVisible = false;
               this.$emit("ok");
-              this.$message.success(res.msg);
+              this.$message.success("绑定成功");
             }else{
-              this.$message.error(res.msg);
+              this.$message.error("绑定失败");
             }
           });
         } else {

@@ -28,7 +28,11 @@
         <el-input v-model="form.personNo" placeholder="请输入学籍号"></el-input>
       </el-form-item>
       <el-form-item label="学校" prop="schoolId">
-        <schllo-select :schoolName.sync="form.schoolId" ref="school" />
+        <schllo-select
+          :schoolName.sync="form.schoolId"
+          @changeSchool="changeSchool"
+          ref="school"
+        />
       </el-form-item>
       <el-form-item label="校区" prop="campusId">
         <!--        <campus-select-->
@@ -176,20 +180,26 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
-      // this.$nextTick(() => {
-      //   this.$refs["school"].selectValue = "";
-      // });
       this.dialogFormVisible = true;
     },
     edit(id) {
       this.dialogFormVisible = true;
       studentInfo({ id }).then(res => {
         if (res.code === 200) {
-          this.form = Object.assign(this.form, res.data);
+          this.getClass(res.data.campusId);
+
+          Object.assign(this.form, res.data);
+          // console.log(this.form,res.data)
           this.$refs["school"].selectValue = res.data.schoolId;
+
           // this.$refs["campus"].selectChange(res.data.campusId);
         }
       });
+    },
+    changeSchool(e) {
+      this.form.campusId = "";
+      this.form.classNo = "";
+      this.getSelectList(e);
     },
     ok(formName) {
       this.$refs[formName].validate(valid => {
@@ -212,7 +222,6 @@ export default {
       });
     },
     getClass(id) {
-      // console.log(123);
       classDown({ campusId: id }).then(res => {
         if (res.code === 200) {
           this.classArr = res.data;
@@ -224,15 +233,12 @@ export default {
     "form.schoolId": {
       immediate: true,
       handler(newVal) {
-        // this.form.campusId = "";
-        this.form.classNo = "";
         newVal && this.getSelectList(newVal);
       }
     },
     "form.campusId": {
       immediate: true,
       handler(newVal) {
-        this.form.classNo = "";
         newVal && this.getClass(newVal);
       }
     }

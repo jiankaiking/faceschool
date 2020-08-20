@@ -15,14 +15,28 @@
       </el-form-item>
     </el-form>
     <div class="table-box">
-      <el-table :data="tableData" border style="width: 100%">
+      <el-table
+        :data="tableData"
+        border
+        v-loading="loading"
+        empty-text
+        style="width: 100%"
+      >
         <el-table-column prop="deviceNo" label="设备SN"></el-table-column>
         <el-table-column
           prop="deviceRange"
           label="设备使用业务场景"
         ></el-table-column>
-        <el-table-column prop="schoolName" label="所属学校"></el-table-column>
-        <el-table-column prop="storeName" label="所属门店"></el-table-column>
+        <el-table-column prop="schoolName" label="所属学校">
+          <template slot-scope="scope">
+            {{scope.row.bindStatus == 1?scope.row.schoolName:''}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="storeName" label="所属门店">
+          <template slot-scope="scope">
+            {{scope.row.bindStatus == 1?scope.row.storeName:''}}
+          </template>
+        </el-table-column>
         <el-table-column prop="aliIsvName" label="所属ISV"></el-table-column>
         <el-table-column prop="deviceStatus" label="机具状态">
           <template slot-scope="scope">
@@ -31,7 +45,7 @@
         </el-table-column>
         <el-table-column prop="bindStatus" label="机具绑定状态">
           <template slot-scope="scope">
-            {{ scope.row.bindStatus == "0" ? "已绑定" : "未绑定" }}
+            {{ scope.row.bindStatus == "1" ? "已绑定" : "未绑定" }}
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -39,14 +53,14 @@
             <el-button
               type="text"
               @click="againAdd(scope.row)"
-              v-if="scope.row.deviceStatus != '2'"
+              v-if="scope.row.deviceStatus != '3'"
               >注册</el-button
             >
             <el-button
               type="text"
-              @click="toBindModel(scope.row.id)"
+              @click="toBindModel(scope.row)"
               v-if="
-                scope.row.deviceStatus == '2' && scope.row.bindStatus == '0'
+                scope.row.deviceStatus == '3' && scope.row.bindStatus == '0'
               "
               >绑定</el-button
             >
@@ -54,7 +68,7 @@
               type="text"
               @click="unbind(scope.row.id)"
               v-if="
-                scope.row.deviceStatus == '2' && scope.row.bindStatus == '1'
+                scope.row.deviceStatus == '3' && scope.row.bindStatus == '1'
               "
               >解绑</el-button
             >
@@ -73,7 +87,7 @@
       >
       </el-pagination>
     </div>
-    <device-add-model ref="modelForm" @ok="addOk" />
+    <device-add-model ref="modelForm" @ok="addOk" @no="loadData" />
     <bind-model ref="bindModel" @ok="loadData" />
   </div>
 </template>
@@ -101,23 +115,30 @@ export default {
     };
   },
   methods: {
-    toBindModel(deviceNo) {
-      this.$refs["bindModel"].add(deviceNo);
+    toBindModel(device) {
+      this.$refs["bindModel"].add({
+        deviceId: device.id,
+        deviceNo: device.deviceNo
+      });
     },
 
     unbind(deviceId) {
       deviceUnbind({ deviceId }).then(res => {
         if (res.code === 200) {
           this.loadData();
+          this.$message.success("已解绑");
+        } else {
+          this.$message.error(res.msg);
         }
       });
     },
     againAdd(row) {
       this.$refs["modelForm"].register(row);
     },
-    addOk(deviceId) {
+    addOk(data) {
       this.loadData();
-      this.toBindModel(deviceId);
+      console.log(data)
+      this.toBindModel({id:data.deviceId,deviceNo:data.deviceNo});
     }
   }
 };

@@ -14,7 +14,10 @@
         <el-input v-model="form.schoolStdcode" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="地址" prop="regionLongCode">
-        <citySelect @selectCode="getCity" :city-code="form.regionLongCode"></citySelect>
+        <citySelect
+          @selectCode="getCity"
+          :city-code="form.regionLongCode"
+        ></citySelect>
       </el-form-item>
       <el-form-item prop="address">
         <el-input placeholder="请输入详细地址" v-model="form.address" />
@@ -95,7 +98,7 @@ export default {
         ]
       },
       form: {
-        schoolStdcode:'',
+        schoolStdcode: "",
         schoolName: "",
         regionLongCode: "",
         address: "",
@@ -108,14 +111,21 @@ export default {
     };
   },
   methods: {
+    clearValidate() {
+      this.$nextTick(() => {
+        this.$refs["form"].clearValidate();
+      });
+    },
     add() {
       Object.keys(this.form).forEach(key => {
         this.form[key] = "";
       });
       this.dialogFormVisible = true;
+      this.clearValidate()
     },
     edit(id) {
       this.dialogFormVisible = true;
+      this.clearValidate()
       getSchoolInfo({ id }).then(res => {
         if (res.code === 200) {
           this.form = res.data;

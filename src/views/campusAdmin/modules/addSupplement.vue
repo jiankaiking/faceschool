@@ -26,7 +26,10 @@
         <el-input v-model="form.storeNo" placeholder="请输入门店ID"></el-input>
       </el-form-item>
       <el-form-item label="门店名称" prop="storeName">
-        <el-input v-model="form.storeName" placeholder="请输入门店名称"></el-input>
+        <el-input
+          v-model="form.storeName"
+          placeholder="请输入门店名称"
+        ></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -37,7 +40,7 @@
 </template>
 
 <script>
-import { schoolSupplement ,supplementInfo} from "../../../api/api";
+import { schoolSupplement, supplementInfo } from "../../../api/api";
 export default {
   name: "campisAddModel",
   data() {
@@ -56,17 +59,22 @@ export default {
         ],
         token: [{ required: true, message: "请输入token", trigger: "blur" }],
         storeNo: [{ required: true, message: "请输入门店ID", trigger: "blur" }],
-        storeName: [{ required: true, message: "请输入门店名称", trigger: "blur" }],
-
+        storeName: [
+          { required: true, message: "请输入门店名称", trigger: "blur" }
+        ]
       }
     };
   },
+
   methods: {
     add(id) {
-      supplementInfo({schoolId:id}).then(res=>{
-        Object.assign(this.form,res.data)
-      })
+      supplementInfo({ schoolId: id }).then(res => {
+        Object.assign(this.form, res.data);
+      });
       this.dialogFormVisible = true;
+      this.$nextTick(() => {
+        this.$refs["form"].clearValidate();
+      });
     },
 
     ok(formName) {

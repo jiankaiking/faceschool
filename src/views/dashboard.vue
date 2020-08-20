@@ -9,7 +9,7 @@
 
     <el-container style="height: 100%">
       <el-header><global-header /></el-header>
-      <el-main><router-view /></el-main>
+      <el-main style="overflow-x: hidden"><router-view /></el-main>
     </el-container>
   </el-container>
 </template>

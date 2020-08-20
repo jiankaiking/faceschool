@@ -162,6 +162,8 @@ export default {
           this.$refs[`popover-${id}`].doClose();
           this.$message.success(res.msg);
           this.loadData();
+        }else{
+          this.$message.error("删除失败")
         }
       });
     },

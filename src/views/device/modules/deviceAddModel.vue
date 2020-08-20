@@ -151,12 +151,13 @@ export default {
         if (valid) {
           this.trueForm().then(res => {
             if (res.code === 200) {
-              this.dialogFormVisible = false;
               this.$message.success(res.msg);
-              this.$emit("ok", res.data.deviceId);
+              this.$emit("ok", res.data);
             } else {
-              this.$message.error(res.msg);
+              this.$message.error("注册失败");
+              this.$emit("no");
             }
+            this.dialogFormVisible = false;
           });
         } else {
           return false;

@@ -35,7 +35,7 @@ data.orderStatus = [
   { code: "2", name: "通道支付" },
   { code: "3", name: "保证金支付" },
   { code: "4", name: "已撤销" },
-  { code: "5", name: "已关闭" }
+  { code: "5", name: "已退款" }
 ];
 
 //押金类型
@@ -49,8 +49,8 @@ data.sceneType = [
 
 data.deviceStatus = [
   { code: "1", name: "未注册" },
-  { code: "2", name: "已激活" },
-  { code: "3", name: "未激活" }
+  { code: "2", name: "未激活" },
+  { code: "3", name: "已激活" }
 ]
 
 

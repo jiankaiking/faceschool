@@ -199,6 +199,8 @@ export default {
         if (res.code === 200) {
           this.$refs[`popover-${id}`].doClose();
           this.loadData();
+        }else{
+          this.$message.error("删除失败")
         }
       });
     },

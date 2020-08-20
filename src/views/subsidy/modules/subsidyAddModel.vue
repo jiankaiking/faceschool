@@ -20,7 +20,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8" :offset="1">
-          <el-form-item label="补贴时间" prop="endTime">
+          <el-form-item label="补贴时间" label-width="80px" prop="endTime">
             <el-date-picker
               v-model="startEndTime"
               @input="testClick"
@@ -49,6 +49,7 @@
         </el-form-item>
         <el-form-item
           label="补贴金额"
+          label-width="80px"
           v-if="form.type == 1"
           prop="subsidyAmount"
         >
@@ -68,7 +69,7 @@
           </el-input>
         </el-form-item>
       </div>
-      <el-form-item label="补贴上限" label-width="140px">
+      <el-form-item label="补贴上限" label-width="140px" class="padding-none">
         <el-row
           v-for="(item, index) in form.subsidyUpper"
           style="margin-bottom: 20px"
@@ -95,7 +96,7 @@
             </el-form-item>
           </el-col>
           <el-col
-            :span="6"
+            :span="10"
             :offset="1"
             v-if="form.subsidyUpper[0].upperType != '无'"
           >
@@ -370,6 +371,7 @@ export default {
         subsidyUpper: [{ upperType: "无", upperMoney: "" }],
         subsidyTime: [{ week: "", timeType: "", startEndTime: "" }]
       };
+      this.changeLimit('无')
     },
     edit(id) {
       this.dialogFormVisible = true;
@@ -377,9 +379,15 @@ export default {
       subsidyInfo({ id }).then(res => {
         this.startEndTime = [res.data.startTime, res.data.endTime];
         res.data.subsidyTime.forEach(item => {
-          item.startEndTime = [item.startTime, item.endTime];
+          if(!item.startTime){
+            item.startEndTime = ['', ''];
+          }else{
+            item.startEndTime = [item.startTime, item.endTime];
+          }
+
         });
         this.form = res.data;
+        console.log(this.form)
       });
     },
     testClick(e) {
@@ -460,8 +468,13 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.form.subsidyTime.forEach(item => {
-            item.startTime = item.startEndTime[0];
-            item.endTime = item.startEndTime[1];
+            if(item.timeType == 1){
+              item.startTime = null;
+              item.endTime = null;
+            }else{
+              item.startTime = item.startEndTime[0];
+              item.endTime = item.startEndTime[1];
+            }
           });
           if (this.form.startTime == "" || this.form.endTime == "") {
             this.$message.error("请选择时间");
@@ -481,8 +494,12 @@ export default {
 .el-input-group__append,
 .el-input-group__prepend {
   background: none !important;
+  padding: 0 4px !important;
   border: none !important;
 }
+  /*.padding-none .el-input__inner{*/
+  /*  padding:0 3px !important;*/
+  /*}*/
 </style>
 <style scoped>
 .center-box {

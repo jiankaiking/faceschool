@@ -152,6 +152,8 @@ export default {
               this.dialogFormVisible = false;
               this.$message.success(res.msg);
               this.$emit("ok");
+            }else{
+              this.$message.error(res.msg)
             }
           });
         } else {
