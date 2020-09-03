@@ -34,7 +34,8 @@ const orderStatus = [
   { code: "2", value: "通道支付" },
   { code: "3", value: "保证金支付" },
   { code: "4", value: "已撤销" },
-  { code: "5", value: "已关闭" }
+  { code: "5", value: "已关闭" },
+  { code: "6", value: "保证金补交" }
 ];
 
 const payType = [

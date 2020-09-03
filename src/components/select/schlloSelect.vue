@@ -2,6 +2,7 @@
   <el-select
     v-model="selectValue"
     placeholder="选择学校"
+    clearable
     @change="selectChange"
   >
     <el-option

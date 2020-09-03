@@ -35,7 +35,8 @@ data.orderStatus = [
   { code: "2", name: "通道支付" },
   { code: "3", name: "保证金支付" },
   { code: "4", name: "已撤销" },
-  { code: "5", name: "已退款" }
+  { code: "5", name: "已退款" },
+  { code: "6", name: "保证金补交" }
 ];
 
 //押金类型

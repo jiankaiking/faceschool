@@ -67,14 +67,15 @@ export default {
   },
   methods: {
     showCode() {
+      // console.log(this.code)
       this.province = this.code.substring(0, 2);
       this.city = this.code.substring(0, 4);
       this.region = this.code;
-      getCityCode({ regionLongCode: this.rId })
-        .then(res => {
-          this.provinceArr = res.data;
-          return getCityCode({ regionLongCode: this.province });
-        })
+      getCityCode({ regionLongCode: this.province })
+        // .then(res => {
+        //   this.provinceArr = res.data;
+        //   return getCityCode({ regionLongCode: this.province });
+        // })
         .then(res => {
           this.cityArr = res.data;
           return getCityCode({ regionLongCode: this.city });
